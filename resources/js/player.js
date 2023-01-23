@@ -1,46 +1,34 @@
 var player = {
+    counts: {
+        initial: 20,
+        total: 200,
+        fillUpTo: 10
+    },
+
     init: async function (element) {
         var videojs = window.videojs(element);
 
-        let videos = await axios.post('/api/video/fetch', {
+        const videos = await axios.post('/api/video/fetch', {
             website: element.dataset.website,
             board: element.dataset.board,
-            count: 50
+            count: this.counts.initial
         });
 
-        // videojs.playlist([{
-        //     sources: [{
-        //         src: 'http://media.w3.org/2010/05/sintel/trailer.mp4',
-        //         type: 'video/mp4'
-        //     }],
-        //     thumbnail: 'http://media.w3.org/2010/05/sintel/poster.png',
-        //     poster: 'http://media.w3.org/2010/05/sintel/poster.png',
-        //     name: 'asadsa.webm'
-        // }, {
-        //     sources: [{
-        //         src: 'http://media.w3.org/2010/05/bunny/trailer.mp4',
-        //         type: 'video/mp4'
-        //     }],
-        //     poster: 'http://media.w3.org/2010/05/bunny/poster.png'
-        // }, {
-        //     sources: [{
-        //         src: 'http://vjs.zencdn.net/v/oceans.mp4',
-        //         type: 'video/mp4'
-        //     }],
-        //     poster: 'http://www.videojs.com/img/poster.jpg'
-        // }, {
-        //     sources: [{
-        //         src: 'http://media.w3.org/2010/05/bunny/movie.mp4',
-        //         type: 'video/mp4'
-        //     }],
-        //     poster: 'http://media.w3.org/2010/05/bunny/poster.png'
-        // }, {
-        //     sources: [{
-        //         src: 'http://media.w3.org/2010/05/video/movie_300.mp4',
-        //         type: 'video/mp4'
-        //     }],
-        //     poster: 'http://media.w3.org/2010/05/video/poster.png'
-        // }]);
+        const playlist = videos.data.map(function (video) {
+            return {
+                sources: [{
+                    src: video.url,
+                    type: video.mime
+                }],
+                thumbnail: video.thumbnail,
+                poster: video.thumbnail,
+                name: video.name
+            };
+        });
+
+        videojs.playlist(playlist);
+
+        //TODO: NEXT/PREV BUTTON, MORE STYLING, FONTS
 
         videojs.playlistUi({
             playOnSelect: true,
@@ -51,5 +39,11 @@ var player = {
 
 addEventListener('board-player-init', async (event) => {
     const element = event.target;
+
+    if (typeof element.dataset.playerInited !== 'undefined') {
+        return;
+    }
+
+    element.dataset.playerInited = true;
     await player.init(element);
 });

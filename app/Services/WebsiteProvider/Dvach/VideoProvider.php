@@ -4,21 +4,26 @@ declare(strict_types=1);
 namespace App\Services\WebsiteProvider\Dvach;
 
 use App\Services\Http;
+use App\Services\WebsiteProvider\Dvach\VideoProvider\Url;
 
 class VideoProvider implements \App\Contracts\Website\VideoProvider
 {
     const ID = 'dvach';
-    const BASE_URL = 'https://2ch.hk';
+
+    const MAX_VIDEOS = 20;
 
     private Http $http;
     private \App\Services\Cache $cache;
+    private VideoProvider\Collector $collector;
 
     public function __construct(
          Http $http,
-        \App\Services\Cache $cache
+        \App\Services\Cache $cache,
+        \App\Services\WebsiteProvider\Dvach\VideoProvider\Collector $collector
     ) {
         $this->http = $http;
         $this->cache = $cache;
+        $this->collector = $collector;
     }
 
     public function getBoards(): array
@@ -30,15 +35,17 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
         }
 
         $result = $this->doGetBoards();
-        $this->cache->set(self::ID, 'boards', json_encode($result), 24 * 60 * 60);
+
+        if ($result) {
+            $this->cache->set(self::ID, 'boards', json_encode($result), 24 * 60 * 60);
+        }
 
         return $result;
     }
-
     private function doGetBoards(): array
     {
         try {
-            $json = $this->http->json($this->url('api/mobile/v2/boards'));
+            $json = $this->http->json(Url::url('api/mobile/v2/boards'))->wait(true);
 
             $result = [];
             foreach ($json as $row) {
@@ -54,13 +61,30 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
         return $result;
     }
 
-    public function getVideos(?int $count): array
+    public function getVideos(string $board, ?int $count): array
     {
-        return [];
+        if ($count === null || $count < 1 || $count > self::MAX_VIDEOS) {
+            $count = self::MAX_VIDEOS;
+        }
+
+        try {
+            $ids = $this->getThreadIds($board);
+            return $this->collector->collect($board, $ids, $count);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return [];
+        }
     }
 
-    private function url(string $endpoint): string
+    private function getThreadIds(string $board): array
     {
-        return self::BASE_URL . '/' . $endpoint;
+        $threads = $this->http->json(Url::url("$board/catalog.json"))->wait(true)['threads'] ?? [];
+
+        $result = [];
+        foreach ($threads as $thread) {
+            $result[] = (int) $thread['num'];
+        }
+
+        return $result;
     }
 }

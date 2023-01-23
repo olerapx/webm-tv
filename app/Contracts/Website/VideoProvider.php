@@ -7,5 +7,8 @@ interface VideoProvider
 {
     public function getBoards(): array;
 
-    public function getVideos(?int $count): array;
+    /**
+     * @return \App\Contracts\Video[]
+     */
+    public function getVideos(string $board, ?int $count): array;
 }

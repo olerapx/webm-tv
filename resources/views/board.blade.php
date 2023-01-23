@@ -1,8 +1,7 @@
 <x-app-layout>
-    @vite(['resources/js/player.js', 'resources/css/player.css'])
     <x-page-title title="{{ $website->getTitle() }} - {{ $board }}"/>
 
-    <div id="#player" data-vjs-player="true" x-data="{}">
+    <div id="#player" data-vjs-player="true">
         <video
             controls
             preload="auto"
@@ -10,6 +9,7 @@
             data-setup='{"autoplay": false}'
             data-website="{{ $website->getCode()->value }}"
             data-board="{{ $board }}"
+            x-data="{}"
             x-init="$dispatch('board-player-init', {element: $el})">
         </video>
 

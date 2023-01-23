@@ -5,14 +5,32 @@ namespace App\Services;
 
 class Http
 {
-    public function json(string $url): array
-    {
-        $response = \Illuminate\Support\Facades\Http::get($url);
+    private ?\GuzzleHttp\ClientInterface $client = null;
 
-        if (!$response->successful()) {
-            throw new \Symfony\Component\HttpKernel\Exception\HttpException($response->status());
+    public function json(string $url): \GuzzleHttp\Promise\PromiseInterface
+    {
+        return $this->get($url)->then(function (string $response) {
+            return json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        });
+    }
+
+    public function get(string $url): \GuzzleHttp\Promise\PromiseInterface
+    {
+        return $this->client()->requestAsync('GET', $url)->then(function (\Psr\Http\Message\ResponseInterface $response) {
+            if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
+                throw new \Symfony\Component\HttpKernel\Exception\HttpException($response->getStatusCode());
+            }
+
+            return $response->getBody()->getContents();
+        });
+    }
+
+    private function client(): \GuzzleHttp\ClientInterface
+    {
+        if ($this->client === null) {
+            $this->client = new \GuzzleHttp\Client();
         }
 
-        return $response->json();
+        return $this->client;
     }
 }
