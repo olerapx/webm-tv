@@ -1,4 +1,4 @@
-<div class="my-1 px-4 w-full md:w-1/3 lg:my-4 lg:px-4 lg:w-1/4">
+<div class="my-1 px-4 w-1/2 md:w-1/3 lg:my-4 lg:px-4 lg:w-1/4">
     <div class="rounded-lg shadow-lg aspect-square">
         <div class="rounded-full bg-slate-50 aspect-square shadow-inner p-4">
             <a href="#">
