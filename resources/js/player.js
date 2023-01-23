@@ -39,7 +39,7 @@ class Player {
     }
 
     async _loadVideos(count) {
-        if (this.loading) {
+        if (this.loading || this.videoFetcher.noMoreVideos) {
             return;
         }
         this.loading = true;
