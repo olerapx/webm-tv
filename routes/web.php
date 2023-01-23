@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/me', [ProfileController::class, 'index'])->name('me');
 });
 
 Route::controller(\App\Http\Controllers\DownloadController::class)->group(function () {

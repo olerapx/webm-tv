@@ -8,7 +8,7 @@ $breadcrumbs->for('index', function (\App\Models\BreadcrumbGenerator $generator)
 
 $breadcrumbs->for('profile', function (\App\Models\BreadcrumbGenerator $generator) {
     $generator->push('webm', route('index'));
-    $generator->push('me', route('profile'));
+    $generator->push('me', route('me'));
 });
 
 $breadcrumbs->for('website', function (\App\Models\BreadcrumbGenerator $generator, \App\Enums\Website $website) {
