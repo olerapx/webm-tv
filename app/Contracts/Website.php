@@ -9,5 +9,7 @@ interface Website
 
     public function getTitle(): string;
 
+    public function getAllowedDomains(): array;
+
     public function getVideoProvider(): \App\Contracts\Website\VideoProvider;
 }

@@ -16,6 +16,11 @@ class Reddit implements \App\Contracts\Website
         return 'reddit.com';
     }
 
+    public function getAllowedDomains(): array
+    {
+        return [];
+    }
+
     public function getVideoProvider(): \App\Contracts\Website\VideoProvider
     {
         // TODO:

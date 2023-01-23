@@ -9,4 +9,6 @@ interface WebsiteProvider
      * @return Website[]
      */
     public function getAll(): array;
+
+    public function getAllowedDomains(): array;
 }

@@ -19,4 +19,15 @@ class WebsiteProvider implements \App\Contracts\WebsiteProvider
             \App\Enums\Website::Dvach->value  => App::make(\App\Services\WebsiteProvider\Dvach::class)
         ];
     }
+
+    public function getAllowedDomains(): array
+    {
+        $result = [];
+
+        foreach ($this->getAll() as $website) {
+            $result[] = $website->getAllowedDomains();
+        }
+
+        return array_unique(array_merge(...$result));
+    }
 }

@@ -7,13 +7,16 @@ const player = {
         fillUpTo: 10
     },
 
+    videoElement: null,
+    playlistElement: null,
+
     init: async function (container) {
-        const videoElement = container.querySelector('.js-plyr-video');
-        const playlistElement = container.querySelector('.js-plyr-playlist');
+        this.videoElement = container.querySelector('.js-plyr-video');
+        this.playlistElement = container.querySelector('.js-plyr-playlist');
 
         const videos = await axios.post('/api/video/fetch', {
-            website: videoElement.dataset.website,
-            board: videoElement.dataset.board,
+            website: this.videoElement.dataset.website,
+            board: this.videoElement.dataset.board,
             count: this.counts.initial
         });
 
@@ -29,44 +32,44 @@ const player = {
             };
         });
 
-        const player = new window.plyr(videoElement, {
+        const player = new window.plyr(this.videoElement, {
             keyboard: {focused: false, global: false}
         });
 
         player.once('ready', function () {
-            plyrPlaylist.init(container, player, playlist, playlistElement);
-        });
+            plyrPlaylist.init(container, player, playlist, this.playlistElement);
+        }.bind(this));
 
-        this.initGui(container, player, playlistElement);
+        this.initGui(container, player);
         this.initEvents();
         this.initKeyboard(player);
     },
 
-    initGui: function(container, player, playlistElement) {
+    initGui: function(container, player) {
         player.on('ready', function () {
             let play = container.querySelector('.plyr__controls').querySelector('[data-plyr="play"]');
 
             if (plyrPlaylist.getNext()) {
                 play.after(
-                    playlistElement.querySelector('.js-plyr-next').content.cloneNode(true).querySelector('button')
+                    this.playlistElement.querySelector('.js-plyr-next').content.cloneNode(true).querySelector('button')
                 );
             }
 
             if (plyrPlaylist.getPrev()) {
                 play.before(
-                    playlistElement.querySelector('.js-plyr-prev').content.cloneNode(true).querySelector('button')
+                    this.playlistElement.querySelector('.js-plyr-prev').content.cloneNode(true).querySelector('button')
                 );
             }
 
             let settings = container.querySelector('.plyr__controls').querySelector('[data-plyr="settings"]');
             settings.after(
-                playlistElement.querySelector('.js-plyr-download').content.cloneNode(true).querySelector('button')
+                this.playlistElement.querySelector('.js-plyr-download').content.cloneNode(true).querySelector('button')
             );
 
             settings.after(
-                playlistElement.querySelector('.js-plyr-share').content.cloneNode(true).querySelector('button')
+                this.playlistElement.querySelector('.js-plyr-share').content.cloneNode(true).querySelector('button')
             );
-        });
+        }.bind(this));
     },
 
     initEvents: function () {
@@ -98,6 +101,9 @@ const player = {
             },
             'a': () => {
                 plyrPlaylist.prev()
+            },
+            's': () => {
+                this.download()
             },
             'f': () => {
                 player.fullscreen.toggle()
@@ -140,7 +146,8 @@ const player = {
         if (!video) {
             return;
         }
-        // fileSaver.saveAs(video.sources[0].src, video.title);
+
+        window.open(`/download?file=${encodeURIComponent(video.sources[0].src)}`, '_blank');
     }
 };
 

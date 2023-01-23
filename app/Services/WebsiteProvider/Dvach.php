@@ -16,6 +16,13 @@ class Dvach implements \App\Contracts\Website
         return '2ch.hk';
     }
 
+    public function getAllowedDomains(): array
+    {
+        return [
+            '2ch.hk'
+        ];
+    }
+
     public function getVideoProvider(): \App\Contracts\Website\VideoProvider
     {
         return \Illuminate\Support\Facades\App::make(\App\Services\WebsiteProvider\Dvach\VideoProvider::class);
