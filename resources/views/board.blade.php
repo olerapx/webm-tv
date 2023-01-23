@@ -1,4 +1,4 @@
 <x-app-layout>
-    <x-page-title title="{{ $website->getTitle() }} - {{ $board }}"/>
+    <x-page-title />
     <x-player :website="$website" board="{{ $board }}"/>
 </x-app-layout>

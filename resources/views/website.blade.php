@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-page-title title="{{ $website->getTitle() }}"/>
+    <x-page-title />
 
     <div class="container my-8 mx-auto px-4 md:px-12" x-data="{component: new BoardSearch($el)}">
         <div class="flex justify-end my-8">

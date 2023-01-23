@@ -15,6 +15,6 @@ Route::controller(\App\Http\Controllers\DownloadController::class)->group(functi
 
 Route::controller(\App\Http\Controllers\IndexController::class)->group(function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/{website}', 'website');
-    Route::get('/{website}/{board}', 'board');
+    Route::get('/{website}', 'website')->name('website');
+    Route::get('/{website}/{board}', 'board')->name('board');
 });

@@ -1,4 +1,4 @@
 <x-app-layout>
-    <x-page-title title="{{ config('app.name', 'Laravel') }}"/>
+    <x-page-title />
     <x-website-grid />
 </x-app-layout>
