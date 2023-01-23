@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-page-title title="{{ $website->getTitle() }}"/>
 
-    <div class="container my-12 mx-auto px-4 md:px-12">
+    <div class="container my-8 mx-auto px-4 md:px-12">
         <div class="flex justify-end my-8">
             <div class="relative w-full lg:w-1/3 px-4" x-data="{}">
                 <input type="search"
