@@ -10,9 +10,6 @@ class Collector
     const MAX_TOTAL_REQUESTS = 20;
     const PARALLEL = 5;
 
-    const API_WEBM = 6;
-    const API_MP4 = 10;
-
     private \App\Services\Http $http;
     private \App\Services\Video\HashChecker $hashChecker;
 
@@ -63,9 +60,7 @@ class Collector
                     return;
                 }
 
-                $posts = $value['threads'][0]['posts'] ?? [];
-
-                foreach ($this->videosFromPosts($posts) as $video) {
+                foreach (Extractor::extract($value) as $video) {
                     if ($this->hashChecker->checkUnique($video)) {
                         $result[] = $video;
                     }
@@ -94,38 +89,5 @@ class Collector
         return array_map(function ($id) use ($board) {
             return $this->http->json(Url::url("{$board}/res/{$id}.json"));
         }, $threadIds);
-    }
-
-    private function videosFromPosts(array $posts): \Generator
-    {
-        foreach ($posts as $post) {
-            foreach ($post['files'] ?? [] as $file) {
-                $videoType = $this->apiToVideoType((int) $file['type']);
-
-                if (!$videoType) {
-                    continue;
-                }
-
-                $thumbnail = isset($file['thumbnail']) ? Url::url($file['thumbnail']) : null;
-
-                yield new \App\Models\Video([
-                    \App\Models\Video::URL        => Url::url($file['path']),
-                    \App\Models\Video::NAME       => $file['name'],
-                    \App\Models\Video::HASH       => $file['md5'],
-                    \App\Models\Video::TYPE       => $videoType,
-                    \App\Models\Video::THUMBNAIL  => $thumbnail,
-                    \App\Models\Video::SORT_ORDER => (int) $file['name']
-                ]);
-            }
-        }
-    }
-
-    private function apiToVideoType(int $type): ?\App\Enums\VideoType
-    {
-        return match ($type) {
-            self::API_WEBM => \App\Enums\VideoType::WEBM,
-            self::API_MP4 => \App\Enums\VideoType::MP4,
-            default => null
-        };
     }
 }
