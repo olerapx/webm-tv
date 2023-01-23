@@ -9,7 +9,7 @@ class IndexController extends Controller
 {
     public function index(Request $request): \Illuminate\View\View
     {
-        return view('welcome');
+        return view('index');
     }
 
     public function website(Request $request, \App\Enums\Website $website): \Illuminate\View\View
