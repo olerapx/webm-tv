@@ -54,6 +54,10 @@ class Collector
             }
         }
 
+        usort($result, function (\App\Contracts\Video $a, \App\Contracts\Video $b) {
+            return $b->getSortOrder() <=> $a->getSortOrder();
+        });
+
         return $result;
     }
 
@@ -84,11 +88,12 @@ class Collector
                 $thumbnail = isset($file['thumbnail']) ? Url::url($file['thumbnail']) : null;
 
                 yield new \App\Models\Video([
-                    \App\Models\Video::URL       => Url::url($file['path']),
-                    \App\Models\Video::NAME      => $file['name'],
-                    \App\Models\Video::HASH      => $file['md5'],
-                    \App\Models\Video::TYPE      => $videoType,
-                    \App\Models\Video::THUMBNAIL => $thumbnail
+                    \App\Models\Video::URL        => Url::url($file['path']),
+                    \App\Models\Video::NAME       => $file['name'],
+                    \App\Models\Video::HASH       => $file['md5'],
+                    \App\Models\Video::TYPE       => $videoType,
+                    \App\Models\Video::THUMBNAIL  => $thumbnail,
+                    \App\Models\Video::SORT_ORDER => (int) $file['name']
                 ]);
             }
         }

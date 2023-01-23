@@ -10,6 +10,7 @@ class Video extends DataObject implements \App\Contracts\Video
     const THUMBNAIL = 'thumbnail';
     const HASH = 'hash';
     const TYPE = 'type';
+    const SORT_ORDER = 'sort_order';
 
     public function getUrl(): string
     {
@@ -51,5 +52,10 @@ class Video extends DataObject implements \App\Contracts\Video
         }
 
         return $result;
+    }
+
+    public function getSortOrder(): int
+    {
+        return $this->getAttribute(self::SORT_ORDER);
     }
 }
