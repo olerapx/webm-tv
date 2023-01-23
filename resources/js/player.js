@@ -38,9 +38,9 @@ const player = {
 
         player.once('ready', function () {
             plyrPlaylist.init(container, player, playlist, this.playlistElement);
+            this.initGui(container, player);
         }.bind(this));
 
-        this.initGui(container, player);
         this.initEvents();
         this.initKeyboard(player);
     },
@@ -90,14 +90,14 @@ const player = {
         });
 
         addEventListener('board-playlist-share', () => {
-
+            this.share();
         });
     },
 
     initKeyboard: function (player) {
         const actions = {
-            'd': () => {
-                plyrPlaylist.next()
+            'w': () => {
+                this.share();
             },
             'a': () => {
                 plyrPlaylist.prev()
@@ -105,24 +105,27 @@ const player = {
             's': () => {
                 this.download()
             },
+            'd': () => {
+                plyrPlaylist.next()
+            },
             'f': () => {
                 player.fullscreen.toggle()
             },
             'space': () => {
                 player.togglePlay()
             },
-            'right': () => {
-                player.forward()
+            'up': () => {
+                player.increaseVolume(.05)
             },
             'left': () => {
                 player.rewind()
             },
-            'up': () => {
-                player.increaseVolume(.05)
-            },
             'down': () => {
                 player.decreaseVolume(.05)
-            }
+            },
+            'right': () => {
+                player.forward()
+            },
         };
 
         for (let i of [...Array(10).keys()]) {
@@ -148,6 +151,35 @@ const player = {
         }
 
         window.open(`/download?file=${encodeURIComponent(video.sources[0].src)}`, '_blank');
+    },
+
+    share: function () {
+        let video = plyrPlaylist.getCurrentVideo();
+        if (!video) {
+            return;
+        }
+
+        var textArea = document.createElement("textarea");
+        textArea.style.position = 'fixed';
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+        textArea.style.background = 'transparent';
+
+        textArea.value = video.sources[0].src;
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+            tooltip.show(document.querySelector('.js-tooltip'));
+        } catch (e) {
+        }
+
+        document.body.removeChild(textArea);
     }
 };
 

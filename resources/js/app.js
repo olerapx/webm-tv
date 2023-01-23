@@ -12,6 +12,8 @@ import "./player"
 import plyrPlaylist from "./playlist.js";
 import "../css/player.css"
 
+import tooltip from './tooltip';
+
 window.Alpine = Alpine;
 window.plyr = plyr;
 
@@ -19,5 +21,7 @@ window.hotkeys = hotkeys;
 
 window.boardSearch = boardSearch;
 window.plyrPlaylist = plyrPlaylist;
+
+window.tooltip = tooltip;
 
 Alpine.start();
