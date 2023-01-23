@@ -27,8 +27,7 @@ class Player {
             await this._loadVideos(this.counts().initial);
             await this.select(0);
 
-            this._initGui();
-
+            this._initControls();
             this.inited = true;
         });
 
@@ -62,7 +61,7 @@ class Player {
         this.loading = false;
     }
 
-    _initGui () {
+    _initControls () {
         this.player.on('ready', () => {
             let buttons = this.container.querySelector('.js-plyr-buttons').content.cloneNode(true).querySelectorAll('button');
             let controls = this.container.querySelector('.plyr__controls');
@@ -81,14 +80,12 @@ class Player {
 
     _play(index) {
         let playlistItem = this.playlist.select(index);
-        if (playlistItem !== null) {
-            if (this.player.source === playlistItem.video.sources[0].src) {
-                return;
-            }
-
-            this.player.source = playlistItem.video;
-            this.player.play().catch(() => {})
+        if (playlistItem === null || this.player.source === playlistItem.video.sources[0].src) {
+            return;
         }
+
+        this.player.source = playlistItem.video;
+        this.player.play().catch(() => {})
     }
 
     async _loadMore(index) {
@@ -107,7 +104,7 @@ class Player {
     }
 
     download () {
-        let video = this.playlist.getCurrentVideo();
+        let video = this.playlist.currentVideo();
         if (!video) {
             return;
         }
@@ -116,14 +113,14 @@ class Player {
     }
 
     share () {
-        let video = this.playlist.getCurrentVideo();
+        let video = this.playlist.currentVideo();
         if (!video) {
             return;
         }
 
         Clipboard.copy(video.sources[0].src, () => {
             Tooltip.show(this.container.querySelector('.js-plyr-share-button'), 'copied!', 1000);
-        })
+        });
     }
 }
 

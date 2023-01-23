@@ -42,7 +42,7 @@ class Playlist {
         return this.currentIndex - 1;
     }
 
-    getCurrentVideo() {
+    currentVideo() {
         if (this.currentIndex === null) {
             return null;
         }
