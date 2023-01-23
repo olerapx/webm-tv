@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 
+use GuzzleHttp\Promise\PromiseInterface;
+
 class Collector
 {
     const MAX_TOTAL_REQUESTS = 20;
@@ -31,13 +33,13 @@ class Collector
             return [];
         }
 
-        $playlistHashes = array_flip($playlistHashes);
+        $this->hashChecker->setPlaylist($playlistHashes);
         $threadIds = array_slice($threadIds, 0, self::MAX_TOTAL_REQUESTS);
 
         $result = [];
 
         foreach (array_chunk($threadIds, self::PARALLEL) as $chunk) {
-            $result += $this->getVideosChunk($board, $chunk, $playlistHashes, $count);
+            $result += $this->getVideosChunk($board, $chunk, $count);
 
             if (count($result) == $count) {
                 return \App\Services\Video\Sorter::sort($result);
@@ -47,15 +49,16 @@ class Collector
         return \App\Services\Video\Sorter::sort($result);
     }
 
-    private function getVideosChunk(string $board, array $chunk, array $playlistHashes, int $count): array
+    private function getVideosChunk(string $board, array $chunk, int $count): array
     {
         $result = [];
+
         $promises = $this->getRequestBatch($board, $chunk);
         $promisesLeft = count($promises);
 
-        $aggregate = \GuzzleHttp\Promise\Each::of(
+        \GuzzleHttp\Promise\Each::of(
             $promises,
-            function ($value, $idx, \GuzzleHttp\Promise\PromiseInterface $aggregate) use ($playlistHashes, &$result, $count, &$promisesLeft) {
+            function ($value, $i, PromiseInterface $aggregate) use (&$result, $count, &$promisesLeft) {
                 if (\GuzzleHttp\Promise\Is::settled($aggregate)) {
                     return;
                 }
@@ -63,7 +66,7 @@ class Collector
                 $posts = $value['threads'][0]['posts'] ?? [];
 
                 foreach ($this->videosFromPosts($posts) as $video) {
-                    if ($this->hashChecker->checkUnique($video, $playlistHashes)) {
+                    if ($this->hashChecker->checkUnique($video)) {
                         $result[] = $video;
                     }
 
@@ -78,14 +81,13 @@ class Collector
                     $aggregate->resolve($result);
                 }
             }
-        );
+        )->wait();
 
-        $aggregate->wait();
         return $result;
     }
 
     /**
-     * @return \GuzzleHttp\Promise\PromiseInterface[]
+     * @return PromiseInterface[]
      */
     private function getRequestBatch(string $board, array $threadIds): array
     {
