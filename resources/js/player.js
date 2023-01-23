@@ -1,3 +1,5 @@
+import plyrPlaylist from "./playlist";
+
 const player = {
     counts: {
         initial: 20,
@@ -35,8 +37,36 @@ const player = {
             plyrPlaylist.init(container, player, playlist, playlistElement);
         });
 
+        this.initGui(container, player, playlistElement);
         this.initEvents();
         this.initKeyboard(player);
+    },
+
+    initGui: function(container, player, playlistElement) {
+        player.on('ready', function () {
+            let play = container.querySelector('.plyr__controls').querySelector('[data-plyr="play"]');
+
+            if (plyrPlaylist.getNext()) {
+                play.after(
+                    playlistElement.querySelector('.js-plyr-next').content.cloneNode(true).querySelector('button')
+                );
+            }
+
+            if (plyrPlaylist.getPrev()) {
+                play.before(
+                    playlistElement.querySelector('.js-plyr-prev').content.cloneNode(true).querySelector('button')
+                );
+            }
+
+            let settings = container.querySelector('.plyr__controls').querySelector('[data-plyr="settings"]');
+            settings.after(
+                playlistElement.querySelector('.js-plyr-download').content.cloneNode(true).querySelector('button')
+            );
+
+            settings.after(
+                playlistElement.querySelector('.js-plyr-share').content.cloneNode(true).querySelector('button')
+            );
+        });
     },
 
     initEvents: function () {
@@ -117,11 +147,11 @@ const player = {
 addEventListener('board-player-init', async (event) => {
     const container = event.target;
 
-    if (typeof container.dataset.playerInited !== 'undefined') {
+    if (typeof container.playerInited !== 'undefined') {
         return;
     }
 
-    container.dataset.playerInited = true;
+    container.playerInited = true;
     await player.init(container);
 
     container.scrollIntoView({behavior: 'smooth'});

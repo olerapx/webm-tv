@@ -5,6 +5,7 @@ namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 
 class Collector
 {
+    const MAX_TOTAL_REQUESTS = 20;
     const PARALLEL = 5;
 
     const API_WEBM = 6;
@@ -26,6 +27,8 @@ class Collector
         if (!$threadIds || !$count) {
             return [];
         }
+
+        $threadIds = array_slice($threadIds, 0, self::MAX_TOTAL_REQUESTS);
 
         $result = $hashed = $plain = [];
 
