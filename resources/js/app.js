@@ -1,26 +1,24 @@
-import './bootstrap';
+import './bootstrap'
 
-import Alpine from 'alpinejs';
+import Alpine from 'alpinejs'
+window.Alpine = Alpine
 
-import plyr from "plyr";
-import "plyr/dist/plyr.css"
+import plyr from "plyr"
+window.plyr = plyr
+import 'plyr/dist/plyr.css'
 
-import hotkeys from 'hotkeys-js';
+import hotkeys from 'hotkeys-js'
+window.hotkeys = hotkeys
 
-import "./board-search";
-import "./player"
-import plyrPlaylist from "./playlist.js";
-import "../css/player.css"
+import "./board-search"
 
-import tooltip from './tooltip';
+import './player'
+import './player-hotkeys'
+import './clipboard'
+import './playlist.js'
+import './playlist-item'
+import '../css/player.css'
 
-window.Alpine = Alpine;
-window.plyr = plyr;
+import './tooltip'
 
-window.hotkeys = hotkeys;
-
-window.plyrPlaylist = plyrPlaylist;
-
-window.tooltip = tooltip;
-
-Alpine.start();
+Alpine.start()

@@ -1,5 +1,5 @@
-const tooltip = {
-    show: function (element) {
+class Tooltip {
+    static show(element) {
         if (!element) {
             return;
         }
@@ -12,4 +12,4 @@ const tooltip = {
     }
 }
 
-export default tooltip;
+window.Tooltip = Tooltip;

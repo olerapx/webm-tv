@@ -1,7 +1,9 @@
 <x-app-layout>
     <x-page-title title="{{ $website->getTitle() }} - {{ $board }}"/>
 
-    <div class="flex w-full h-screen mt-8" x-data="{}" x-init="$dispatch('board-player-init', {element: $el})">
+    <div class="flex w-full h-screen mt-8"
+         x-data="{component: new Player($el, '{{ $website->getCode()->value }}', '{{ $board }}')}"
+         x-init="component.load()">
         <video
                controls
                preload="auto"
@@ -12,11 +14,11 @@
 
         <div class="plyr-playlist-wrapper">
             <ul class="js-plyr-playlist plyr-playlist">
-                <template class="js-plyr-playlist-item-template">
-                    <li class="playlist-item">
-                        <a class="flex flex-col" x-on:click="$dispatch('board-playlist-select', {element: $el})">
-                            <img class="plyr-miniposter" />
-                            <span class="plyr-minititle"></span>
+                <template x-for="item in component.playlist.items">
+                    <li class="playlist-item" :class="{'pls-playing': item.playing}">
+                        <a class="flex flex-col" x-on:click="component.playlist.select(item)">
+                            <img class="plyr-miniposter" x-bind:src="item.video.poster" />
+                            <span class="plyr-minititle" x-text="item.video.title"></span>
                         </a>
                     </li>
                 </template>
@@ -24,7 +26,7 @@
                 <template class="js-plyr-prev">
                     <button type="button"
                             class="plyr__controls__item plyr__control"
-                            x-on:click="$dispatch('board-playlist-prev')"
+                            x-on:click="component.playlist.prev()"
                     >
                             <svg id="Layer_1"
                                  xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +45,7 @@
                 <template class="js-plyr-next">
                     <button type="button"
                             class="plyr__controls__item plyr__control"
-                            x-on:click="$dispatch('board-playlist-next')"
+                            x-on:click="component.playlist.next()"
                     >
                         <svg id="Layer_1"
                              xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +64,7 @@
                 <template class="js-plyr-download">
                     <button type="button"
                             class="plyr__controls__item plyr__control"
-                            x-on:click="$dispatch('board-playlist-download')"
+                            x-on:click="component.download()"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg"
                              shape-rendering="geometricPrecision"
@@ -79,7 +81,7 @@
                 <template class="js-plyr-share">
                     <button type="button"
                             class="plyr__controls__item plyr__control"
-                            x-on:click="$dispatch('board-playlist-share')"
+                            x-on:click="component.share()"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg"
                              shape-rendering="geometricPrecision"
