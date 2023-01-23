@@ -44,18 +44,12 @@ class Player {
         }
         this.loading = true;
 
-        let hashes = [];
-        for (const video of this.playlist.items) {
-            if (video.video.hash) {
-                hashes.push(video.video.hash);
-            }
-            hashes.push(video.video.url_hash);
-        }
-
         try {
-            const playlist = await VideoFetcher.fetch(this.website, this.board, count, hashes);
+            const playlist = await VideoFetcher.fetch(this.website, this.board, count, this.playlist.hashes());
             this.playlist.add(playlist);
-        } catch (e) { }
+        } catch (e) {
+            console.log(e); // TODO: TOOLTIP
+        }
 
         let exceededVideos = this.playlist.items.length - this.counts().total;
         if (this.playlist.items.length > this.counts().total) {
@@ -91,7 +85,7 @@ class Player {
             }
 
             this.player.source = playlistItem.video;
-            this.player.play().catch((e) => {})
+            this.player.play().catch(() => {})
         }
     }
 
@@ -103,15 +97,11 @@ class Player {
     }
 
     async selectNext() {
-        if (this.playlist.next() !== null) {
-            await this.select(this.playlist.next());
-        }
+        await this.select(this.playlist.next());
     }
 
     async selectPrev() {
-        if (this.playlist.prev() !== null) {
-            await this.select(this.playlist.prev());
-        }
+        await this.select(this.playlist.prev());
     }
 
     download () {

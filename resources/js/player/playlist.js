@@ -43,7 +43,7 @@ class Playlist {
     }
 
     getCurrentVideo() {
-        if (!this.currentIndex) {
+        if (this.currentIndex === null) {
             return null;
         }
 
@@ -52,6 +52,18 @@ class Playlist {
 
     slice(downTo) {
         this.items = this.items.slice(downTo).filter((c) => c);
+    }
+
+    hashes() {
+        let hashes = [];
+        for (const video of this.items) {
+            if (video.video.hash) {
+                hashes.push(video.video.hash);
+            }
+            hashes.push(video.video.url_hash);
+        }
+
+        return hashes;
     }
 }
 
