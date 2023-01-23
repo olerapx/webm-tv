@@ -16,8 +16,7 @@ class WebsiteProvider implements \App\Contracts\WebsiteProvider
         }
 
         return $this->cache = [
-            \App\Enums\Website::Dvach->value  => App::make(\App\Services\WebsiteProvider\Dvach::class),
-            \App\Enums\Website::Reddit->value => App::make(\App\Services\WebsiteProvider\Reddit::class)
+            \App\Enums\Website::Dvach->value  => App::make(\App\Services\WebsiteProvider\Dvach::class)
         ];
     }
 }

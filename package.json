@@ -16,8 +16,6 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "video.js": "^7.20.3",
-        "videojs-playlist": "^5.0.0",
-        "videojs-playlist-ui": "^4.1.0"
+        "plyr": "^3.7.3"
     }
 }

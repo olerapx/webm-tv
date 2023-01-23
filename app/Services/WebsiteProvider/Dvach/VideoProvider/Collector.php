@@ -36,11 +36,19 @@ class Collector
                 $posts = $response['threads'][0]['posts'] ?? [];
 
                 foreach ($this->videosFromPosts($posts) as $video) {
+                    $hasHashed = $hasPlain = true;
+
                     if ($video->getHash() !== null && !isset($hashed[$video->getHash()])) {
+                        $hasHashed = false;
                         $hashed[$video->getHash()] = $video;
-                        $result[] = $video;
-                    } else if (!isset($plain[$video->getUrlHash()])) {
+                    }
+
+                    if (!isset($plain[$video->getUrlHash()])) {
+                        $hasPlain = false;
                         $plain[$video->getUrlHash()] = $video;
+                    }
+
+                    if (!$hasHashed && !$hasPlain) {
                         $result[] = $video;
                     }
 
