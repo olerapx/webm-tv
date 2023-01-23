@@ -9,13 +9,6 @@
                 </div>
             </div>
 
-            <div class="px-6 py-4">
-                @guest
-                    <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
-                    <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                @endguest
-            </div>
-
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -43,6 +36,13 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+
+                @guest
+                <div class="px-6 py-4">
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+                        <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                </div>
+                @endguest
             </div>
 
             <div class="-mr-2 flex items-center sm:hidden">
@@ -77,8 +77,10 @@
             @endauth
 
             @guest
-                <x-responsive-nav-link :href="route('login')">{{ __('Login') }}</x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('register')">{{ __('Register') }}</x-responsive-nav-link>
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('login')">{{ __('Login') }}</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('register')">{{ __('Register') }}</x-responsive-nav-link>
+                </div>
             @endguest
         </div>
     </div>
