@@ -54,8 +54,12 @@ class Player {
             hashes.push(video.video.url_hash);
         }
 
-        const playlist = await VideoFetcher.fetch(this.website, this.board, count, hashes);
-        this.playlist.add(playlist);
+        try {
+            const playlist = await VideoFetcher.fetch(this.website, this.board, count, hashes);
+            this.playlist.add(playlist);
+        } catch (e) {
+
+        }
 
         let switchToFirst = false;
         if (this.playlist.currentIndex !== null
@@ -80,13 +84,8 @@ class Player {
         this.player.on('ready', () => {
             let play = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="play"]');
 
-            if (this.playlist.next() !== null) {
-                play.after(this.container.querySelector('.js-plyr-next').content.cloneNode(true));
-            }
-
-            if (this.playlist.prev() !== null) {
-                play.before(this.container.querySelector('.js-plyr-prev').content.cloneNode(true));
-            }
+            play.after(this.container.querySelector('.js-plyr-next').content.cloneNode(true));
+            play.before(this.container.querySelector('.js-plyr-prev').content.cloneNode(true));
 
             let settings = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="settings"]');
 

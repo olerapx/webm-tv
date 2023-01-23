@@ -29,11 +29,11 @@
     </div>
 
     <template class="js-plyr-prev">
-        <button type="button" class="plyr__controls__item plyr__control" x-on:click="await component.selectPrev()">{!! $svg('prev') !!}</button>
+        <button type="button" x-show="component.playlist.prev()" class="plyr__controls__item plyr__control" x-on:click="await component.selectPrev()">{!! $svg('prev') !!}</button>
     </template>
 
     <template class="js-plyr-next">
-        <button type="button" class="plyr__controls__item plyr__control" x-on:click="await component.selectNext()">{!! $svg('next') !!}</button>
+        <button type="button" x-show="component.playlist.next()" class="plyr__controls__item plyr__control" x-on:click="await component.selectNext()">{!! $svg('next') !!}</button>
     </template>
 
     <template class="js-plyr-download">
