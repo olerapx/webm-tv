@@ -29,7 +29,7 @@ class UserController extends Controller
         return redirect()->intended('/');
     }
 
-    public function destroy(Request $request): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 

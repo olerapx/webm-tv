@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 
 class ProfileController extends Controller
 {
-    public function edit(\Illuminate\Http\Request $request): \Illuminate\View\View
+    public function index(\Illuminate\Http\Request $request): \Illuminate\View\View
     {
-        return view('profile.edit', [
+        return view('profile', [
             'user' => $request->user(),
         ]);
     }

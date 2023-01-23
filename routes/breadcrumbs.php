@@ -6,6 +6,11 @@ $breadcrumbs->for('index', function (\App\Models\BreadcrumbGenerator $generator)
     $generator->push('webm', route('index'));
 });
 
+$breadcrumbs->for('profile', function (\App\Models\BreadcrumbGenerator $generator) {
+    $generator->push('webm', route('index'));
+    $generator->push('me', route('profile'));
+});
+
 $breadcrumbs->for('website', function (\App\Models\BreadcrumbGenerator $generator, \App\Enums\Website $website) {
     $generator->push('webm', route('index'));
     $generator->push($website->value, url("/{$website->value}"));
