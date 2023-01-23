@@ -114,7 +114,17 @@ const plyrPlaylist = {
         }
 
         return prev;
-    }
+    },
+
+    // getCurrentVideo: function () {
+    //     let playing = this.container.querySelector('.pls-playing');
+    //
+    //     if (!playing) {
+    //         return null;
+    //     }
+    //
+    //     return playing.video;
+    // },
 };
 
 export default plyrPlaylist

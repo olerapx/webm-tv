@@ -36,7 +36,7 @@
 
 .plyr-playlist-wrapper .plyr-playlist li a {
     text-decoration: none;
-    color: #c9c9c9;
+    color: #e7e7e7;
     outline: none;
     padding: 0.5em 0.25em 1em;
     vertical-align: middle;
@@ -53,8 +53,9 @@
 }
 
 .plyr-miniposter {
-    width: 22px;
-    height: 22px;
+    width: 16em;
+    height: 9em;
+    object-fit: cover;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
