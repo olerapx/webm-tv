@@ -1,0 +1,11 @@
+.vjs-playlist {
+    position: absolute;
+    top: 0;
+    right: -20%;
+    width: 20%;
+    height: 100%;
+}
+
+.video-js.vjs-fluid {
+    width: 80%;
+}

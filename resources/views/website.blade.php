@@ -1,5 +1,5 @@
 <x-app-layout>
-    <h1 class="text-4xl text-center font-extrabold text-gray-900 md:text-5xl lg:text-6xl pt-8">{{ $website->getTitle() }}</h1>
+    <x-page-title title="{{ $website->getTitle() }}"/>
 
     <div class="container my-12 mx-auto px-4 md:px-12">
         <div class="flex justify-end my-8">

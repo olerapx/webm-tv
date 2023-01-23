@@ -33,6 +33,9 @@ class IndexController extends Controller
             abort(404);
         }
 
-        die;
+        return view('board', [
+            'website' => $website,
+            'board'   => $board
+        ]);
     }
 }

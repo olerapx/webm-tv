@@ -54,6 +54,11 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
         return $result;
     }
 
+    public function getVideos(?int $count): array
+    {
+        return [];
+    }
+
     private function url(string $endpoint): string
     {
         return self::BASE_URL . '/' . $endpoint;
