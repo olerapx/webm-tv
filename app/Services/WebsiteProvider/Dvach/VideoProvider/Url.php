@@ -9,6 +9,6 @@ class Url
 
     public static function url(string $endpoint): string
     {
-        return self::BASE_URL . '/' . $endpoint;
+        return self::BASE_URL . '/' . trim($endpoint, '/');
     }
 }

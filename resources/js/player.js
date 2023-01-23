@@ -35,7 +35,30 @@ const player = {
             plyrPlaylist.init(container, player, playlist, playlistElement);
         });
 
+        this.initEvents();
         this.initKeyboard(player);
+    },
+
+    initEvents: function () {
+        addEventListener('board-playlist-select', (event) => {
+            plyrPlaylist.select(event.target.closest('.playlist-item'));
+        });
+
+        addEventListener('board-playlist-next', () => {
+            plyrPlaylist.next();
+        });
+
+        addEventListener('board-playlist-prev', () => {
+            plyrPlaylist.prev();
+        });
+
+        addEventListener('board-playlist-download', () => {
+            this.download();
+        });
+
+        addEventListener('board-playlist-share', () => {
+
+        });
     },
 
     initKeyboard: function (player) {
@@ -80,6 +103,14 @@ const player = {
                 callback();
             })
         }
+    },
+
+    download: function() {
+        let video = plyrPlaylist.getCurrentVideo();
+        if (!video) {
+            return;
+        }
+        // fileSaver.saveAs(video.sources[0].src, video.title);
     }
 };
 
@@ -94,16 +125,4 @@ addEventListener('board-player-init', async (event) => {
     await player.init(container);
 
     container.scrollIntoView({behavior: 'smooth'});
-});
-
-addEventListener('board-playlist-select', (event) => {
-    plyrPlaylist.select(event.target.closest('.playlist-item'));
-});
-
-addEventListener('board-playlist-next', () => {
-    plyrPlaylist.next();
-});
-
-addEventListener('board-playlist-prev', () => {
-    plyrPlaylist.prev();
 });

@@ -18,13 +18,8 @@ const plyrPlaylist = {
         for (const item of playlist) {
             const playlistItem = template.content.cloneNode(true).querySelector('li');
 
-            const a = playlistItem.querySelector('a');
-            a.dataset.type = item.sources[0].type;
-            a.dataset.videoId = item.sources[0].src;
-
             playlistItem.querySelector('img').src = item.poster;
             playlistItem.querySelector('span').textContent = item.title;
-
             playlistItem.video = item;
 
             playlistElement.appendChild(playlistItem);
@@ -55,10 +50,20 @@ const plyrPlaylist = {
                     playlistElement.querySelector('.js-plyr-prev').content.cloneNode(true).querySelector('button')
                 );
             }
+
+            let settings = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="settings"]');
+            settings.after(
+                playlistElement.querySelector('.js-plyr-download').content.cloneNode(true).querySelector('button')
+            );
+
+            settings.after(
+                playlistElement.querySelector('.js-plyr-share').content.cloneNode(true).querySelector('button')
+            );
         }.bind(this));
     },
 
     select: function (playlistItem) {
+        // todo: if file is deleted, delete it from playlist and open the next one (or prev)
         let playing = this.container.querySelector('.pls-playing');
         if (playing) {
             playing.classList.remove('pls-playing');
@@ -116,15 +121,15 @@ const plyrPlaylist = {
         return prev;
     },
 
-    // getCurrentVideo: function () {
-    //     let playing = this.container.querySelector('.pls-playing');
-    //
-    //     if (!playing) {
-    //         return null;
-    //     }
-    //
-    //     return playing.video;
-    // },
+    getCurrentVideo: function () {
+        let playing = this.container.querySelector('.pls-playing');
+
+        if (!playing) {
+            return null;
+        }
+
+        return playing.video;
+    },
 };
 
 export default plyrPlaylist

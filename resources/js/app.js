@@ -14,6 +14,7 @@ import "../css/player.css"
 
 window.Alpine = Alpine;
 window.plyr = plyr;
+
 window.hotkeys = hotkeys;
 
 window.boardSearch = boardSearch;
