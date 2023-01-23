@@ -8,13 +8,13 @@ class PlayerHotkeys {
                 player.share();
             },
             'a': () => {
-                player.playlist.prev()
+                player.selectPrev()
             },
             's': () => {
                 player.download()
             },
             'd': () => {
-                player.playlist.next()
+                player.selectNext()
             },
             'f': () => {
                 player.player.fullscreen.toggle()

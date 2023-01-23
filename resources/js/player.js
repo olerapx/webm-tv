@@ -17,7 +17,6 @@ class Player {
     }
 
     async load() {
-        this.playlist.setPlayer(this);
         const playlist = await VideoFetcher.fetch(this.website, this.board, this.counts().initial);
 
         this.player = new Plyr(this.container.querySelector('.js-plyr-video'), {
@@ -25,14 +24,16 @@ class Player {
         });
 
         this.player.once('ready', function () {
-            this.playlist.load(playlist);
+            this.playlist.add(playlist);
+            this.select(0);
+
             this._initGui();
 
             this.loaded = true;
         }.bind(this));
 
         this.player.on('ended', () => {
-            this.playlist.next();
+            this.selectNext();
         });
 
         PlayerHotkeys.init(this);
@@ -42,11 +43,11 @@ class Player {
         this.player.on('ready', () => {
             let play = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="play"]');
 
-            if (this.playlist.getNext()) {
+            if (this.playlist.next() !== null) {
                 play.after(this.container.querySelector('.js-plyr-next').content.cloneNode(true));
             }
 
-            if (this.playlist.getPrev()) {
+            if (this.playlist.prev() !== null) {
                 play.before(this.container.querySelector('.js-plyr-prev').content.cloneNode(true));
             }
 
@@ -55,6 +56,28 @@ class Player {
             settings.after(this.container.querySelector('.js-plyr-download').content.cloneNode(true));
             settings.after(this.container.querySelector('.js-plyr-share').content.cloneNode(true));
         });
+    }
+
+    select(index) {
+        let playlistItem = this.playlist.select(index);
+        if (playlistItem !== null) {
+
+            // todo: if file is deleted, delete it from playlist and open the next one (or prev)
+            this.player.source = playlistItem.video;
+            this.player.play().catch((e) => {})
+        }
+    }
+
+    selectNext() {
+        if (this.playlist.next() !== null) {
+            this.select(this.playlist.next());
+        }
+    }
+
+    selectPrev() {
+        if (this.playlist.prev() !== null) {
+            this.select(this.playlist.prev());
+        }
     }
 
     download () {

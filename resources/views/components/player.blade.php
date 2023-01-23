@@ -17,9 +17,9 @@
 
     <div class="plyr-playlist-wrapper">
         <ul class="js-plyr-playlist plyr-playlist">
-            <template x-for="item in component.playlist.items">
+            <template x-for="(item, index) in component.playlist.items">
                 <li class="playlist-item" :class="{'pls-playing': item.playing}">
-                    <a class="flex flex-col" x-on:click="component.playlist.select(item)">
+                    <a class="flex flex-col" x-on:click="component.select(index)">
                         <img class="plyr-miniposter" x-bind:src="item.video.poster" />
                         <span x-text="item.video.title"></span>
                     </a>
@@ -29,11 +29,11 @@
     </div>
 
     <template class="js-plyr-prev">
-        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.playlist.prev()">{!! $svg('prev') !!}</button>
+        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.selectPrev()">{!! $svg('prev') !!}</button>
     </template>
 
     <template class="js-plyr-next">
-        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.playlist.next()">{!! $svg('next') !!}</button>
+        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.selectNext()">{!! $svg('next') !!}</button>
     </template>
 
     <template class="js-plyr-download">

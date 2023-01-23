@@ -1,87 +1,53 @@
 class Playlist {
     constructor() {
         this.items = [];
-        this.playing = null;
+        this.currentIndex = null;
     }
 
-    /**
-     *
-     * @param player Player
-     */
-    setPlayer(player) {
-        this.player = player;
-    }
-
-    load(playlist) {
-        let prev = this.items.length ? this.items.at(-1) : null;
-
+    add(playlist) {
         for (const item of playlist) {
-            let playlistItem = new PlaylistItem(item);
-
-            if (prev) {
-                playlistItem.prev = prev;
-                prev.next = playlistItem;
-            }
-
-            this.items.push(playlistItem);
-            prev = playlistItem;
-        }
-
-        if (this.items.length) {
-            this.select(this.items[0]);
+            this.items.push(new PlaylistItem(item));
         }
     }
 
-    /**
-     * @param playlistItem PlaylistItem
-     */
-    select(playlistItem) {
+    select(index) {
+        let playlistItem = this.items[index];
+        if (typeof playlistItem === 'undefined') {
+            return null;
+        }
+
         for (let item of this.items) {
             item.playing = false;
         }
 
         playlistItem.playing = true;
-        this.playing = playlistItem;
+        this.currentIndex = index;
 
-        // todo: if file is deleted, delete it from playlist and open the next one (or prev)
-        this.player.player.source = playlistItem.video;
-        this.player.player.play().catch((e) => {})
+        return playlistItem;
     }
 
     next() {
-        if (this.getNext()) {
-            this.select(this.getNext());
-        }
-    }
-
-    getNext() {
-        if (!this.playing || !this.playing.next) {
+        if (this.currentIndex === null || this.currentIndex === this.items.length - 1) {
             return null;
         }
 
-        return this.playing.next;
+        return this.currentIndex + 1;
     }
 
     prev() {
-        if (this.getPrev()) {
-            this.select(this.getPrev());
-        }
-    }
-
-    getPrev() {
-        if (!this.playing || !this.playing.prev) {
+        if (this.currentIndex === null || this.currentIndex === 0) {
             return null;
         }
 
-        return this.playing.prev;
+        return this.currentIndex - 1;
     }
 
     getCurrentVideo() {
-        if (!this.playing) {
+        if (!this.currentIndex) {
             return null;
         }
 
-        return this.playing.video;
+        return this.items[this.currentIndex].video;
     }
 }
 
