@@ -17,12 +17,12 @@ import 'tippy.js/dist/tippy.css';
 import "./board-search"
 
 import './player'
-import './player-hotkeys'
-import './clipboard'
-import './playlist.js'
-import './playlist-item'
+import './player/player-hotkeys'
+import './player/playlist'
+import './player/playlist-item'
+import './player/video-fetcher'
 import '../css/player.css'
-
+import './clipboard'
 import './tooltip'
 
 Alpine.start()

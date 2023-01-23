@@ -17,24 +17,7 @@ class Player {
 
     async load() {
         this.playlist.setPlayer(this);
-
-        const videos = await axios.post('/api/video/fetch', {
-            website: this.website,
-            board: this.board,
-            count: this.counts().initial
-        });
-
-        const playlist = videos.data.map(function (video) {
-            return {
-                type: 'video',
-                title: video.name,
-                sources: [{
-                    src: video.url,
-                    type: video.mime
-                }],
-                poster: video.thumbnail,
-            };
-        });
+        const playlist = await VideoFetcher.fetch(this.website, this.board, this.counts().initial);
 
         this.player = new Plyr(this.container.querySelector('.js-plyr-video'), {
             keyboard: {focused: false, global: false}
@@ -57,25 +40,17 @@ class Player {
             let play = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="play"]');
 
             if (this.playlist.getNext()) {
-                play.after(
-                    this.container.querySelector('.js-plyr-next').content.cloneNode(true).querySelector('button')
-                );
+                play.after(this.container.querySelector('.js-plyr-next').content.cloneNode(true));
             }
 
             if (this.playlist.getPrev()) {
-                play.before(
-                    this.container.querySelector('.js-plyr-prev').content.cloneNode(true).querySelector('button')
-                );
+                play.before(this.container.querySelector('.js-plyr-prev').content.cloneNode(true));
             }
 
             let settings = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="settings"]');
-            settings.after(
-                this.container.querySelector('.js-plyr-download').content.cloneNode(true).querySelector('button')
-            );
 
-            settings.after(
-                this.container.querySelector('.js-plyr-share').content.cloneNode(true).querySelector('button')
-            );
+            settings.after(this.container.querySelector('.js-plyr-download').content.cloneNode(true));
+            settings.after(this.container.querySelector('.js-plyr-share').content.cloneNode(true));
         });
     }
 
