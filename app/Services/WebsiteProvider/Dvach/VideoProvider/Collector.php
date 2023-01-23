@@ -11,6 +11,9 @@ class Collector
     const API_WEBM = 6;
     const API_MP4 = 10;
 
+    private array $hashed = [];
+    private array $plain = [];
+
     private \App\Services\Http $http;
 
     public function __construct(
@@ -22,15 +25,16 @@ class Collector
     /**
      * @return \App\Contracts\Video[]
      */
-    public function collect(string $board, array $threadIds, int $count): array
+    public function collect(string $board, array $threadIds, int $count, array $hashes): array
     {
         if (!$threadIds || !$count) {
             return [];
         }
 
+        $hashes = array_flip($hashes);
         $threadIds = array_slice($threadIds, 0, self::MAX_TOTAL_REQUESTS);
 
-        $result = $hashed = $plain = [];
+        $result = [];
 
         foreach (array_chunk($threadIds, self::PARALLEL) as $chunk) {
             $responses = \GuzzleHttp\Promise\Utils::unwrap($this->getRequestBatch($board, $chunk));
@@ -39,19 +43,7 @@ class Collector
                 $posts = $response['threads'][0]['posts'] ?? [];
 
                 foreach ($this->videosFromPosts($posts) as $video) {
-                    $hasHashed = $hasPlain = true;
-
-                    if ($video->getHash() !== null && !isset($hashed[$video->getHash()])) {
-                        $hasHashed = false;
-                        $hashed[$video->getHash()] = $video;
-                    }
-
-                    if (!isset($plain[$video->getUrlHash()])) {
-                        $hasPlain = false;
-                        $plain[$video->getUrlHash()] = $video;
-                    }
-
-                    if (!$hasHashed && !$hasPlain) {
+                    if ($this->checkHashUnique($video, $hashes)) {
                         $result[] = $video;
                     }
 
@@ -109,5 +101,23 @@ class Collector
             self::API_MP4 => \App\Enums\VideoType::MP4,
             default => null
         };
+    }
+
+    private function checkHashUnique(\App\Contracts\Video $video, array $hashes): bool
+    {
+        $hasHashed = $hasPlain = true;
+        [$hash, $urlHash] = [$video->getHash(), $video->getUrlHash()];
+
+        if ($hash !== null && !isset($this->hashed[$hash]) && !isset($hashes[$hash])) {
+            $hasHashed = false;
+            $this->hashed[$video->getHash()] = $video;
+        }
+
+        if (!isset($this->plain[$urlHash]) && !isset($hashes[$urlHash])) {
+            $hasPlain = false;
+            $this->plain[$video->getUrlHash()] = $video;
+        }
+
+        return !$hasHashed && !$hasPlain;
     }
 }

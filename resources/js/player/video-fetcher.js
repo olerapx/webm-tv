@@ -1,9 +1,10 @@
 class VideoFetcher {
-    static async fetch(website, board, count) {
+    static async fetch(website, board, count, hashes) {
         const videos = await axios.post('/api/video/fetch', {
             website: website,
             board: board,
-            count: count
+            count: count,
+            hashes: hashes
         });
 
         return videos.data.map(function (video) {
@@ -15,6 +16,8 @@ class VideoFetcher {
                     type: video.mime
                 }],
                 poster: video.thumbnail,
+                hash: video.hash,
+                url_hash: video.url_hash
             };
         });
     }

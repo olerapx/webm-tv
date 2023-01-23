@@ -47,6 +47,7 @@ class Video extends DataObject implements \App\Contracts\Video
 
         if (is_array($result)) {
             $result['mime'] = $this->getType()->getMime();
+            $result['url_hash'] = $this->getUrlHash();
         }
 
         return $result;

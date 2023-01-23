@@ -1,8 +1,8 @@
 <div class="flex w-full h-screen mt-8"
      x-data="{component: new Player($el, '{{ $website->getCode()->value }}', '{{ $board }}')}"
-     x-init="component.load(); $el.scrollIntoView({behavior: 'smooth'});">
+     x-init="component.init(); $el.scrollIntoView({behavior: 'smooth'});">
 
-    <div x-show="!component.loaded" class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
+    <div x-show="!component.inited" class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
         <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
         <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
     </div>
@@ -19,7 +19,7 @@
         <ul class="js-plyr-playlist plyr-playlist">
             <template x-for="(item, index) in component.playlist.items">
                 <li class="playlist-item" :class="{'pls-playing': item.playing}">
-                    <a class="flex flex-col" x-on:click="component.select(index)">
+                    <a class="flex flex-col" x-on:click="await component.select(index)">
                         <img class="plyr-miniposter" x-bind:src="item.video.poster" />
                         <span x-text="item.video.title"></span>
                     </a>
@@ -29,11 +29,11 @@
     </div>
 
     <template class="js-plyr-prev">
-        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.selectPrev()">{!! $svg('prev') !!}</button>
+        <button type="button" class="plyr__controls__item plyr__control" x-on:click="await component.selectPrev()">{!! $svg('prev') !!}</button>
     </template>
 
     <template class="js-plyr-next">
-        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.selectNext()">{!! $svg('next') !!}</button>
+        <button type="button" class="plyr__controls__item plyr__control" x-on:click="await component.selectNext()">{!! $svg('next') !!}</button>
     </template>
 
     <template class="js-plyr-download">

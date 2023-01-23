@@ -11,32 +11,55 @@ class Player {
         this.container = container;
         this.website = website;
         this.board = board;
-        this.loaded = false;
+        this.inited = false;
+        this.loading = false;
 
         this.playlist = new Playlist();
     }
 
-    async load() {
-        const playlist = await VideoFetcher.fetch(this.website, this.board, this.counts().initial);
-
+    async init() {
         this.player = new Plyr(this.container.querySelector('.js-plyr-video'), {
             keyboard: {focused: false, global: false}
         });
 
-        this.player.once('ready', function () {
-            this.playlist.add(playlist);
-            this.select(0);
+        this.player.once('ready', async() => {
+            await this._loadVideos(this.counts().initial);
+            await this.select(0);
 
             this._initGui();
 
-            this.loaded = true;
-        }.bind(this));
+            this.inited = true;
+        });
 
         this.player.on('ended', () => {
             this.selectNext();
         });
 
         PlayerHotkeys.init(this);
+    }
+
+    async _loadVideos(count) {
+        if (this.loading) {
+            return;
+        }
+
+        this.loading = true;
+
+        let hashes = [];
+        for (const video of this.playlist.items) {
+            if (video.video.hash) {
+                hashes.push(video.video.hash);
+            }
+
+            hashes.push(video.video.url_hash);
+        }
+
+        const playlist = await VideoFetcher.fetch(this.website, this.board, count, hashes);
+        this.playlist.add(playlist);
+
+        this.loading = false;
+
+        // remove extra
     }
 
     _initGui () {
@@ -58,25 +81,29 @@ class Player {
         });
     }
 
-    select(index) {
+    async select(index) {
         let playlistItem = this.playlist.select(index);
         if (playlistItem !== null) {
-
-            // todo: if file is deleted, delete it from playlist and open the next one (or prev)
             this.player.source = playlistItem.video;
             this.player.play().catch((e) => {})
         }
-    }
 
-    selectNext() {
-        if (this.playlist.next() !== null) {
-            this.select(this.playlist.next());
+        const totalCount = this.playlist.items.length;
+        if (totalCount - (index + 1) < this.counts().fillUpTo) {
+            const fillUpTo = this.counts().fillUpTo - (totalCount - (index + 1));
+            await this._loadVideos(fillUpTo);
         }
     }
 
-    selectPrev() {
+    async selectNext() {
+        if (this.playlist.next() !== null) {
+            await this.select(this.playlist.next());
+        }
+    }
+
+    async selectPrev() {
         if (this.playlist.prev() !== null) {
-            this.select(this.playlist.prev());
+            await this.select(this.playlist.prev());
         }
     }
 

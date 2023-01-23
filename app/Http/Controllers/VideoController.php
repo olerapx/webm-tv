@@ -18,6 +18,7 @@ class VideoController
         $website = $request->get('website');
         $board = $request->get('board');
         $count = $request->get('count');
+        $hashes = $request->get('hashes', []);
 
         $provider = $this->websiteProvider->getAll()[$website] ?? null;
         if (!$provider) {
@@ -28,6 +29,6 @@ class VideoController
             throw new \Symfony\Component\HttpKernel\Exception\HttpException(400, 'Unsupported board');
         }
 
-        return response()->json($provider->getVideoProvider()->getVideos($board, $count));
+        return response()->json($provider->getVideoProvider()->getVideos($board, $count, $hashes));
     }
 }
