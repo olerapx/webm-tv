@@ -2,6 +2,8 @@
      x-data="{component: new Player($el, '{{ $website->getCode()->value }}', '{{ $board }}')}"
      x-init="component.init(); $el.scrollIntoView({behavior: 'smooth'});">
 
+    <div class="hidden animate-spin"></div>
+
     <div x-show="!component.inited" class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
         <div role="status">{!! $svg('loading') !!}</div>
     </div>
