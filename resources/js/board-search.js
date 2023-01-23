@@ -1,28 +1,33 @@
-var boardSearch = {
-    links: null,
+class BoardSearch {
+    constructor(container) {
+        this.container = container;
+        this.links = null;
+    }
 
-    search: function(element) {
-        const search = element.value.toLowerCase();
+    setElement(element) {
+        this.element = element;
+    }
 
-        for (const link of this.getLinks()) {
+    search() {
+        const search = this.element.value.toLowerCase();
+
+        for (const link of this._getLinks()) {
             if (link.dataset.text.toLowerCase().includes(search)) {
                 link.classList.remove('hidden');
             } else {
                 link.classList.add('hidden');
             }
         }
-    },
+    }
 
-    getLinks: function () {
+    _getLinks () {
         if (this.links !== null) {
             return this.links;
         }
 
-        this.links = document.querySelectorAll('.js-board-link');
+        this.links = this.container.querySelectorAll('.js-board-link');
         return this.links;
     }
-};
+}
 
-export {
-    boardSearch as default
-};
+window.BoardSearch = BoardSearch;

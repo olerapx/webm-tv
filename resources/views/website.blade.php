@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-page-title title="{{ $website->getTitle() }}"/>
 
-    <div class="container my-8 mx-auto px-4 md:px-12">
+    <div class="container my-8 mx-auto px-4 md:px-12" x-data="{component: new BoardSearch($el)}">
         <div class="flex justify-end my-8">
-            <div class="relative w-full lg:w-1/3 px-4" x-data="{}">
+            <div class="relative w-full lg:w-1/3 px-4">
                 <input type="search"
                        class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                        placeholder="Search boards..."
-                       x-on:input="boardSearch.search($el)"
-                       x-on:paste="boardSearch.search($el)"
-                       x-init="boardSearch.search($el)"
+                       x-init="component.setElement($el); component.search()"
+                       x-on:input="component.search()"
+                       x-on:paste="component.search()"
                        required
                 >
 
