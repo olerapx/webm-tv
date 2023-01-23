@@ -1,16 +1,15 @@
 <form method="POST"
       action="{{ route('login') }}"
-      x-data="{component: new Login($el)}"
-      x-on:submit.prevent="await component.submit()">
+      x-data="{login: new Login($el)}"
+      x-on:submit.prevent="await login.submit()">
     @csrf
-
 
     <div>
         <x-input-label for="name" :value="__('Username')" />
         <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" required />
 
-        <ul class="text-sm text-red-600 space-y-1" x-show="component.errors.length">
-            <template x-for="error in component.errors">
+        <ul class="text-sm text-red-600 space-y-1" x-show="login.errors.length">
+            <template x-for="error in login.errors">
                 <li x-text="error"></li>
             </template>
         </ul>
