@@ -10,6 +10,10 @@ import 'plyr/dist/plyr.css'
 import hotkeys from 'hotkeys-js'
 window.hotkeys = hotkeys
 
+import tippy from 'tippy.js';
+window.tippy = tippy;
+import 'tippy.js/dist/tippy.css';
+
 import "./board-search"
 
 import './player'

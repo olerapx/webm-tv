@@ -1,14 +1,19 @@
 class Tooltip {
-    static show(element) {
+    static show(element, content, duration) {
         if (!element) {
             return;
         }
 
-        element.classList.add('show');
+        let instance = tippy(element, {
+            content: content,
+            trigger: 'manual'
+        });
 
-        setTimeout( function() {
-            element.classList.remove('show');
-        }, 1000);
+        instance.show();
+
+        setTimeout(() => {
+            instance.hide();
+        }, duration);
     }
 }
 

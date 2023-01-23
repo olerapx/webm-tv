@@ -53,30 +53,28 @@ class Player {
     }
 
     _initGui () {
-        const playlistElement = this.container.querySelector('.js-plyr-playlist');
-
         this.player.on('ready', () => {
             let play = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="play"]');
 
             if (this.playlist.getNext()) {
                 play.after(
-                    playlistElement.querySelector('.js-plyr-next').content.cloneNode(true).querySelector('button')
+                    this.container.querySelector('.js-plyr-next').content.cloneNode(true).querySelector('button')
                 );
             }
 
             if (this.playlist.getPrev()) {
                 play.before(
-                    playlistElement.querySelector('.js-plyr-prev').content.cloneNode(true).querySelector('button')
+                    this.container.querySelector('.js-plyr-prev').content.cloneNode(true).querySelector('button')
                 );
             }
 
             let settings = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="settings"]');
             settings.after(
-                playlistElement.querySelector('.js-plyr-download').content.cloneNode(true).querySelector('button')
+                this.container.querySelector('.js-plyr-download').content.cloneNode(true).querySelector('button')
             );
 
             settings.after(
-                playlistElement.querySelector('.js-plyr-share').content.cloneNode(true).querySelector('button')
+                this.container.querySelector('.js-plyr-share').content.cloneNode(true).querySelector('button')
             );
         });
     }
@@ -97,7 +95,7 @@ class Player {
         }
 
         Clipboard.copy(video.sources[0].src, () => {
-            Tooltip.show(this.container.querySelector('.js-tooltip'));
+            Tooltip.show(this.container.querySelector('.js-plyr-share-button'), 'copied!', 1000);
         })
     }
 }

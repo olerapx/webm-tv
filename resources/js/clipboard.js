@@ -20,6 +20,8 @@ class Clipboard {
             success();
         } catch (e) {
         }
+
+        document.body.removeChild(textArea);
     }
 }
 

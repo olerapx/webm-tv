@@ -19,25 +19,22 @@
                     </a>
                 </li>
             </template>
-
-            <template class="js-plyr-prev">
-                <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.playlist.prev()">{!! $svg('prev') !!}</button>
-            </template>
-
-            <template class="js-plyr-next">
-                <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.playlist.next()">{!! $svg('next') !!}</button>
-            </template>
-
-            <template class="js-plyr-download">
-                <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.download()">{!! $svg('download') !!}</button>
-            </template>
-
-            <template class="js-plyr-share">
-                <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.share()">
-                    {!! $svg('share') !!}
-                    <span class="js-tooltip">copied!</span>
-                </button>
-            </template>
         </ul>
     </div>
+
+    <template class="js-plyr-prev">
+        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.playlist.prev()">{!! $svg('prev') !!}</button>
+    </template>
+
+    <template class="js-plyr-next">
+        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.playlist.next()">{!! $svg('next') !!}</button>
+    </template>
+
+    <template class="js-plyr-download">
+        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.download()">{!! $svg('download') !!}</button>
+    </template>
+
+    <template class="js-plyr-share">
+        <button type="button" class="plyr__controls__item plyr__control js-plyr-share-button" x-on:click="component.share()">{!! $svg('share') !!}</button>
+    </template>
 </div>
