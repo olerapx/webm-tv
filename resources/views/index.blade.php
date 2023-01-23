@@ -1,10 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
     <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
         @guest
             <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
@@ -12,15 +6,15 @@
         @endguest
     </div>
 
-    @auth
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
-                        {{ __("You're logged in!") }}
-                    </div>
-                </div>
-            </div>
+    <h1 class="mb-4 text-4xl text-center font-extrabold text-gray-900 md:text-5xl lg:text-6xl pt-8">{{ config('app.name', 'Laravel') }}</h1>
+
+    <div class="container my-12 mx-auto px-4 md:px-12">
+        <div class="flex flex-wrap -mx-1 lg:-mx-4">
+            <x-website-card path="dvach" />
+            <x-website-card path="dvach" />
+            <x-website-card path="dvach" />
+            <x-website-card path="dvach" />
+            <x-website-card path="dvach" />
         </div>
-    @endauth
+    </div>
 </x-app-layout>
