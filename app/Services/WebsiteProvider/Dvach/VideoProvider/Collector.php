@@ -6,7 +6,7 @@ namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 class Collector
 {
     const MAX_TOTAL_REQUESTS = 20;
-    const PARALLEL = 3;
+    const PARALLEL = 5;
 
     const API_WEBM = 6;
     const API_MP4 = 10;
@@ -37,10 +37,30 @@ class Collector
         $result = [];
 
         foreach (array_chunk($threadIds, self::PARALLEL) as $chunk) {
-            $responses = \GuzzleHttp\Promise\Utils::unwrap($this->getRequestBatch($board, $chunk));
+            $result += $this->getVideosChunk($board, $chunk, $playlistHashes, $count);
 
-            foreach ($responses as $response) {
-                $posts = $response['threads'][0]['posts'] ?? [];
+            if (count($result) == $count) {
+                return \App\Services\Video\Sorter::sort($result);
+            }
+        }
+
+        return \App\Services\Video\Sorter::sort($result);
+    }
+
+    private function getVideosChunk(string $board, array $chunk, array $playlistHashes, int $count): array
+    {
+        $result = [];
+        $promises = $this->getRequestBatch($board, $chunk);
+        $promisesLeft = count($promises);
+
+        $aggregate = \GuzzleHttp\Promise\Each::of(
+            $promises,
+            function ($value, $idx, \GuzzleHttp\Promise\PromiseInterface $aggregate) use ($playlistHashes, &$result, $count, &$promisesLeft) {
+                if (\GuzzleHttp\Promise\Is::settled($aggregate)) {
+                    return;
+                }
+
+                $posts = $value['threads'][0]['posts'] ?? [];
 
                 foreach ($this->videosFromPosts($posts) as $video) {
                     if ($this->hashChecker->checkUnique($video, $playlistHashes)) {
@@ -48,13 +68,20 @@ class Collector
                     }
 
                     if (count($result) == $count) {
-                        return \App\Services\Video\Sorter::sort($result);
+                        $aggregate->resolve($result);
+                        return;
                     }
                 }
-            }
-        }
 
-        return \App\Services\Video\Sorter::sort($result);
+                $promisesLeft --;
+                if (!$promisesLeft) {
+                    $aggregate->resolve($result);
+                }
+            }
+        );
+
+        $aggregate->wait();
+        return $result;
     }
 
     /**
@@ -62,13 +89,9 @@ class Collector
      */
     private function getRequestBatch(string $board, array $threadIds): array
     {
-        $result = [];
-
-        foreach ($threadIds as $id) {
-            $result[] = $this->http->json(Url::url("{$board}/res/{$id}.json"));
-        }
-
-        return $result;
+        return array_map(function ($id) use ($board) {
+            return $this->http->json(Url::url("{$board}/res/{$id}.json"));
+        }, $threadIds);
     }
 
     private function videosFromPosts(array $posts): \Generator
