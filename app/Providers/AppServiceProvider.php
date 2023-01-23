@@ -8,7 +8,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(\App\Contracts\WebsiteProvider::class, \App\Services\WebsiteProvider::class);
+        $this->app->singleton(\App\Contracts\WebsiteProvider::class, \App\Services\WebsiteProvider::class);
     }
 
     public function boot()
