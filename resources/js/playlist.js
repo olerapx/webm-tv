@@ -86,7 +86,7 @@ const plyrPlaylist = {
         }
 
         let next = playing.nextSibling;
-        if (!next || !next.matches('.playlist-item')) {
+        if (!next || next.nodeName === '#text') {
             return null;
         }
 
@@ -109,7 +109,7 @@ const plyrPlaylist = {
         }
 
         let prev = playing.previousSibling;
-        if (!prev || !prev.matches('.playlist-item')) {
+        if (!prev || prev.nodeName === '#text') {
             return null;
         }
 

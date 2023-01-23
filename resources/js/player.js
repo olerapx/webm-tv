@@ -27,10 +27,59 @@ const player = {
             };
         });
 
-        const player = new window.plyr(videoElement, {});
+        const player = new window.plyr(videoElement, {
+            keyboard: {focused: false, global: false}
+        });
+
         player.once('ready', function () {
             plyrPlaylist.init(container, player, playlist, playlistElement);
         });
+
+        this.initKeyboard(player);
+    },
+
+    initKeyboard: function (player) {
+        const actions = {
+            'd': () => {
+                plyrPlaylist.next()
+            },
+            'a': () => {
+                plyrPlaylist.prev()
+            },
+            'f': () => {
+                player.fullscreen.toggle()
+            },
+            'space': () => {
+                player.togglePlay()
+            },
+            'right': () => {
+                player.forward()
+            },
+            'left': () => {
+                player.rewind()
+            },
+            'up': () => {
+                player.increaseVolume(.05)
+            },
+            'down': () => {
+                player.decreaseVolume(.05)
+            }
+        };
+
+        for (let i of [...Array(10).keys()]) {
+            i++;
+
+            actions[i] = () => {
+                player.currentTime = player.duration / 10 * i;
+            }
+        }
+
+        for (const [key, callback] of Object.entries(actions)) {
+            hotkeys(key, (event) => {
+                event.preventDefault();
+                callback();
+            })
+        }
     }
 };
 
@@ -43,6 +92,8 @@ addEventListener('board-player-init', async (event) => {
 
     container.dataset.playerInited = true;
     await player.init(container);
+
+    container.scrollIntoView({behavior: 'smooth'});
 });
 
 addEventListener('board-playlist-select', (event) => {
