@@ -5,11 +5,11 @@ namespace App\View\Components;
 
 class WebsiteCard extends \Illuminate\View\Component
 {
-    private string $path;
+    public \App\Contracts\Website $website;
 
-    public function __construct(string $path)
+    public function __construct(\App\Contracts\Website $website)
     {
-        $this->path = $path;
+        $this->website = $website;
     }
 
     public function render(): \Illuminate\View\View
@@ -19,6 +19,13 @@ class WebsiteCard extends \Illuminate\View\Component
 
     public function svg(): string
     {
-        return \Illuminate\Support\Facades\File::get(resource_path("static/websites/{$this->path}.svg"));
+        return \Illuminate\Support\Facades\File::get(
+            resource_path("static/websites/{$this->website->getCode()->value}.svg")
+        );
+    }
+
+    public function url(): string
+    {
+        return url("/{$this->website->getCode()->value}");
     }
 }

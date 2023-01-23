@@ -5,5 +5,6 @@ namespace App\Enums;
 
 enum Website: String
 {
-    case Dvach = 'dvach';
+    case Dvach = '2ch';
+    case Reddit = 'reddit';
 }
