@@ -5,21 +5,24 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
-class AuthenticatedSessionController extends Controller
+class UserController extends Controller
 {
-    public function create(): View
+    public function login(LoginRequest $request): RedirectResponse
     {
-        return view('auth.login');
-    }
+        try {
+            $user = \App\Models\User::create([
+                'name'     => $request->name,
+                'password' => \Illuminate\Support\Facades\Hash::make($request->password)
+            ]);
 
-    public function store(LoginRequest $request): RedirectResponse
-    {
+            event(new \Illuminate\Auth\Events\Registered($user));
+        } catch (\Throwable $e) {
+        }
+
         $request->authenticate();
         $request->session()->regenerate();
 

@@ -26,4 +26,7 @@ import '../css/player.css'
 import './clipboard'
 import './tooltip'
 
+import './login'
+import '../css/modal.css'
+
 Alpine.start()

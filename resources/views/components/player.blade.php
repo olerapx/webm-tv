@@ -18,7 +18,7 @@
         <ul class="js-plyr-playlist plyr-playlist">
             <template x-for="(item, index) in component.playlist.items">
                 <li class="playlist-item"
-                    x-init="$watch('item.playing', (val, oldVal) => { if (val && !oldVal) $el.scrollIntoView({block: 'nearest', inline: 'nearest'}); })"
+                    x-init="$watch('item.playing', val => { val && $el.scrollIntoView({block: 'nearest', inline: 'nearest'}); })"
                     :class="{'pls-playing': item.playing}">
                     <a class="flex flex-col" x-on:click="await component.select(index);">
                         <img class="plyr-miniposter" x-bind:src="item.video.poster" />
