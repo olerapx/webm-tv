@@ -49,6 +49,10 @@ class Playlist {
 
         return this.items[this.currentIndex].video;
     }
+
+    slice(downTo) {
+        this.items = this.items.slice(downTo).filter((c) => c);
+    }
 }
 
 window.Playlist = Playlist;

@@ -28,19 +28,10 @@
         </ul>
     </div>
 
-    <template class="js-plyr-prev">
-        <button type="button" x-show="component.playlist.prev()" class="plyr__controls__item plyr__control" x-on:click="await component.selectPrev()">{!! $svg('prev') !!}</button>
-    </template>
-
-    <template class="js-plyr-next">
-        <button type="button" x-show="component.playlist.next()" class="plyr__controls__item plyr__control" x-on:click="await component.selectNext()">{!! $svg('next') !!}</button>
-    </template>
-
-    <template class="js-plyr-download">
-        <button type="button" class="plyr__controls__item plyr__control" x-on:click="component.download()">{!! $svg('download') !!}</button>
-    </template>
-
-    <template class="js-plyr-share">
-        <button type="button" class="plyr__controls__item plyr__control js-plyr-share-button" x-on:click="component.share()">{!! $svg('share') !!}</button>
+    <template class="js-plyr-buttons">
+        <button type="button" data-reference="[data-plyr='play']" data-position="before" x-show="component.playlist.prev() !== null" class="plyr__controls__item plyr__control" x-on:click="await component.selectPrev()">{!! $svg('prev') !!}</button>
+        <button type="button" data-reference="[data-plyr='play']" data-position="after" x-show="component.playlist.next() !== null" class="plyr__controls__item plyr__control" x-on:click="await component.selectNext()">{!! $svg('next') !!}</button>
+        <button type="button" data-reference="[data-plyr='settings']" data-position="after" class="plyr__controls__item plyr__control" x-on:click="component.download()">{!! $svg('download') !!}</button>
+        <button type="button" data-reference="[data-plyr='settings']" data-position="after" class="plyr__controls__item plyr__control js-plyr-share-button" x-on:click="component.share()">{!! $svg('share') !!}</button>
     </template>
 </div>

@@ -42,7 +42,6 @@ class Player {
         if (this.loading) {
             return;
         }
-
         this.loading = true;
 
         let hashes = [];
@@ -50,65 +49,56 @@ class Player {
             if (video.video.hash) {
                 hashes.push(video.video.hash);
             }
-
             hashes.push(video.video.url_hash);
         }
 
         try {
             const playlist = await VideoFetcher.fetch(this.website, this.board, count, hashes);
             this.playlist.add(playlist);
-        } catch (e) {
+        } catch (e) { }
 
-        }
-
-        let switchToFirst = false;
-        if (this.playlist.currentIndex !== null
-            && this.playlist.currentIndex < (this.playlist.items.length - this.counts().total - 1)) {
-            switchToFirst = true;
-        }
-
+        let exceededVideos = this.playlist.items.length - this.counts().total;
         if (this.playlist.items.length > this.counts().total) {
-            this.playlist.items = this.playlist.items
-                .slice(this.playlist.items.length - this.counts().total)
-                .filter((c) => c);
+            this.playlist.slice(exceededVideos);
         }
 
-        if (switchToFirst) {
-            this._doSelect(0);
-        }
-
+        this._play(this.playlist.currentIndex);
         this.loading = false;
     }
 
     _initGui () {
         this.player.on('ready', () => {
-            let play = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="play"]');
+            let buttons = this.container.querySelector('.js-plyr-buttons').content.cloneNode(true).querySelectorAll('button');
+            let controls = this.container.querySelector('.plyr__controls');
 
-            play.after(this.container.querySelector('.js-plyr-next').content.cloneNode(true));
-            play.before(this.container.querySelector('.js-plyr-prev').content.cloneNode(true));
-
-            let settings = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="settings"]');
-
-            settings.after(this.container.querySelector('.js-plyr-download').content.cloneNode(true));
-            settings.after(this.container.querySelector('.js-plyr-share').content.cloneNode(true));
+            for (const button of buttons) {
+                let reference = controls.querySelector(button.dataset.reference);
+                button.dataset.position === 'before' ? reference.before(button) : reference.after(button);
+            }
         });
     }
 
     async select(index) {
-        this._doSelect(index);
+        this._play(index);
+        await this._loadMore(index);
+    }
 
-        const totalCount = this.playlist.items.length;
-        if (totalCount - (index + 1) < this.counts().fillUpTo) {
-            const fillUpTo = this.counts().fillUpTo - (totalCount - (index + 1));
-            await this._loadVideos(fillUpTo);
+    _play(index) {
+        let playlistItem = this.playlist.select(index);
+        if (playlistItem !== null) {
+            if (this.player.source === playlistItem.video.sources[0].src) {
+                return;
+            }
+
+            this.player.source = playlistItem.video;
+            this.player.play().catch((e) => {})
         }
     }
 
-    _doSelect(index) {
-        let playlistItem = this.playlist.select(index);
-        if (playlistItem !== null) {
-            this.player.source = playlistItem.video;
-            this.player.play().catch((e) => {})
+    async _loadMore(index) {
+        const videosLeft = this.playlist.items.length - (index + 1);
+        if (videosLeft < this.counts().fillUpTo) {
+            await this._loadVideos(this.counts().fillUpTo - videosLeft);
         }
     }
 
