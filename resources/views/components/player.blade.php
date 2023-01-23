@@ -3,8 +3,7 @@
      x-init="component.init(); $el.scrollIntoView({behavior: 'smooth'});">
 
     <div x-show="!component.inited" class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
-        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
-        <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+        <div role="status">{!! $svg('loading') !!}</div>
     </div>
 
     <video
@@ -19,12 +18,16 @@
         <ul class="js-plyr-playlist plyr-playlist">
             <template x-for="(item, index) in component.playlist.items">
                 <li class="playlist-item" :class="{'pls-playing': item.playing}">
-                    <a class="flex flex-col" x-on:click="await component.select(index)">
+                    <a class="flex flex-col" x-on:click="await component.select(index); $el.scrollIntoView({block: 'nearest', inline: 'nearest'});">
                         <img class="plyr-miniposter" x-bind:src="item.video.poster" />
                         <span x-text="item.video.title"></span>
                     </a>
                 </li>
             </template>
+
+            <li x-show="component.loading" class="playlist-item-loader flex flex-col justify-center">
+                <div class="flex flex-col items-center">{!! $svg('loading') !!}</div>
+            </li>
         </ul>
     </div>
 
