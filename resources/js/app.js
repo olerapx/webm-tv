@@ -4,7 +4,7 @@ import Alpine from 'alpinejs'
 window.Alpine = Alpine
 
 import plyr from "plyr"
-window.plyr = plyr
+window.Plyr = plyr
 import 'plyr/dist/plyr.css'
 
 import hotkeys from 'hotkeys-js'

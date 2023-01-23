@@ -36,13 +36,13 @@ class Player {
             };
         });
 
-        this.player = new window.plyr(this.container.querySelector('.js-plyr-video'), {
+        this.player = new Plyr(this.container.querySelector('.js-plyr-video'), {
             keyboard: {focused: false, global: false}
         });
 
         this.player.once('ready', function () {
             this.playlist.load(playlist);
-            this.initGui();
+            this._initGui();
         }.bind(this));
 
         this.player.on('ended', () => {
@@ -52,31 +52,31 @@ class Player {
         PlayerHotkeys.init(this);
     }
 
-    initGui () {
-        this.playlistElement = this.container.querySelector('.js-plyr-playlist');
+    _initGui () {
+        const playlistElement = this.container.querySelector('.js-plyr-playlist');
 
         this.player.on('ready', () => {
             let play = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="play"]');
 
             if (this.playlist.getNext()) {
                 play.after(
-                    this.playlistElement.querySelector('.js-plyr-next').content.cloneNode(true).querySelector('button')
+                    playlistElement.querySelector('.js-plyr-next').content.cloneNode(true).querySelector('button')
                 );
             }
 
             if (this.playlist.getPrev()) {
                 play.before(
-                    this.playlistElement.querySelector('.js-plyr-prev').content.cloneNode(true).querySelector('button')
+                    playlistElement.querySelector('.js-plyr-prev').content.cloneNode(true).querySelector('button')
                 );
             }
 
             let settings = this.container.querySelector('.plyr__controls').querySelector('[data-plyr="settings"]');
             settings.after(
-                this.playlistElement.querySelector('.js-plyr-download').content.cloneNode(true).querySelector('button')
+                playlistElement.querySelector('.js-plyr-download').content.cloneNode(true).querySelector('button')
             );
 
             settings.after(
-                this.playlistElement.querySelector('.js-plyr-share').content.cloneNode(true).querySelector('button')
+                playlistElement.querySelector('.js-plyr-share').content.cloneNode(true).querySelector('button')
             );
         });
     }
