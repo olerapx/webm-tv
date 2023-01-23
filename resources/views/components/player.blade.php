@@ -1,6 +1,6 @@
 <div class="flex w-full h-screen mt-8"
      x-data="{component: new Player($el, '{{ $website->getCode()->value }}', '{{ $board }}')}"
-     x-init="component.load()">
+     x-init="component.load(); $el.scrollIntoView({behavior: 'smooth'});">
     <video
         controls
         preload="auto"

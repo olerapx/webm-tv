@@ -9,7 +9,6 @@
                 </div>
             </div>
 
-
             <div class="hidden sm:flex sm:items-center">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
