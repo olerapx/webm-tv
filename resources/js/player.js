@@ -13,6 +13,7 @@ class Player {
         this.board = board;
         this.inited = false;
         this.loading = false;
+        this.noMoreVideos = false;
 
         this.playlist = new Playlist();
     }
@@ -39,13 +40,17 @@ class Player {
     }
 
     async _loadVideos(count) {
-        if (this.loading) {
+        if (this.loading || this.noMoreVideos) {
             return;
         }
         this.loading = true;
 
         try {
             const playlist = await VideoFetcher.fetch(this.website, this.board, count, this.playlist.hashes());
+            if (playlist.length < count) {
+                this.noMoreVideos = true;
+            }
+
             this.playlist.add(playlist);
         } catch (e) {
             Tooltip.show(this.container.querySelector('.plyr__controls'), e.toString(), 5000);
