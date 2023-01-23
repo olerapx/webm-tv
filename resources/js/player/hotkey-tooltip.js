@@ -13,8 +13,8 @@ class HotkeyTooltip {
             <b>S</b> - Download<br>
             <b>F</b> - Fullscreen<br>
             <b>Space</b> - Pause<br>
-            <b>Arrow Up / Down</b> - Volume<br>
-            <b>Arrow Left / Right</b> - Rewind / Forward<br>
+            <b>&uarr; / &darr;</b> - Volume<br>
+            <b>&larr; / &rarr;</b> - Rewind / Forward<br>
             <b>1 - 9</b> - Rewind to 10% - 90%<br>
         `;
     }
