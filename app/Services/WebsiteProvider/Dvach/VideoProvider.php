@@ -20,8 +20,10 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
 
             $result = [];
             foreach ($json as $row) {
-                $result[] = new \App\Models\Website\Board($row['id'], $row['name']);
+                $result[$row['id']] = $row['name'];
             }
+
+            ksort($result);
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error($e->getMessage());
             return [];

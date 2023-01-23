@@ -5,8 +5,5 @@ namespace App\Contracts\Website;
 
 interface VideoProvider
 {
-    /**
-     * @return Board[]
-     */
     public function getBoards(): array;
 }

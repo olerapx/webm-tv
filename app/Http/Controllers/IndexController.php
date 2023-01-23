@@ -28,8 +28,11 @@ class IndexController extends Controller
 
     public function board(Request $request, \App\Enums\Website $website, string $board): \Illuminate\View\View
     {
-        var_dump($website);
-        var_dump($board);
+        $website = $this->websiteProvider->getAll()[$website->value];
+        if (!in_array($board, array_keys($website->getVideoProvider()->getBoards()))) {
+            abort(404);
+        }
+
         die;
     }
 }
