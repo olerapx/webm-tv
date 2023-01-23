@@ -36,7 +36,7 @@
 
                 @guest
                     <div align="right">
-                        <a x-on:click.prevent="showLogin = true" href="" class="underline">Sign In / Create</a>
+                        <a x-on:click.prevent="showLogin = true" href="" class="underline">Sign In</a>
                     </div>
                 @endguest
             </div>
@@ -48,7 +48,7 @@
          @keydown.escape="showLogin = false"
          class="modal hidden">
         <div class="modal-box rounded-lg">
-            <button class="absolute right-2 top-2 cursor-pointer rounded-full bg-gray-600 text-white w-6 h-6" x-on:click.prevent="showLogin = false">✕</button>
+            <button class="absolute right-6 top-6 cursor-pointer rounded-full bg-gray-600 text-white w-6 h-6" x-on:click.prevent="showLogin = false">✕</button>
             <x-login/>
         </div>
     </div>
