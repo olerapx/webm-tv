@@ -57,9 +57,23 @@ class Player {
         const playlist = await VideoFetcher.fetch(this.website, this.board, count, hashes);
         this.playlist.add(playlist);
 
-        this.loading = false;
+        let switchToFirst = false;
+        if (this.playlist.currentIndex !== null
+            && this.playlist.currentIndex < (this.playlist.items.length - this.counts().total - 1)) {
+            switchToFirst = true;
+        }
 
-        // remove extra
+        if (this.playlist.items.length > this.counts().total) {
+            this.playlist.items = this.playlist.items
+                .slice(this.playlist.items.length - this.counts().total)
+                .filter((c) => c);
+        }
+
+        if (switchToFirst) {
+            this._doSelect(0);
+        }
+
+        this.loading = false;
     }
 
     _initGui () {
@@ -82,16 +96,20 @@ class Player {
     }
 
     async select(index) {
-        let playlistItem = this.playlist.select(index);
-        if (playlistItem !== null) {
-            this.player.source = playlistItem.video;
-            this.player.play().catch((e) => {})
-        }
+        this._doSelect(index);
 
         const totalCount = this.playlist.items.length;
         if (totalCount - (index + 1) < this.counts().fillUpTo) {
             const fillUpTo = this.counts().fillUpTo - (totalCount - (index + 1));
             await this._loadVideos(fillUpTo);
+        }
+    }
+
+    _doSelect(index) {
+        let playlistItem = this.playlist.select(index);
+        if (playlistItem !== null) {
+            this.player.source = playlistItem.video;
+            this.player.play().catch((e) => {})
         }
     }
 
