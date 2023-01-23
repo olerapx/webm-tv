@@ -11,6 +11,7 @@ class Player {
         this.container = container;
         this.website = website;
         this.board = board;
+        this.loaded = false;
 
         this.playlist = new Playlist();
     }
@@ -26,6 +27,8 @@ class Player {
         this.player.once('ready', function () {
             this.playlist.load(playlist);
             this._initGui();
+
+            this.loaded = true;
         }.bind(this));
 
         this.player.on('ended', () => {
