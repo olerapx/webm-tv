@@ -13,9 +13,9 @@ class Player {
         this.board = board;
         this.inited = false;
         this.loading = false;
-        this.noMoreVideos = false;
 
         this.playlist = new Playlist();
+        this.videoFetcher = new VideoFetcher();
     }
 
     async init() {
@@ -40,20 +40,17 @@ class Player {
     }
 
     async _loadVideos(count) {
-        if (this.loading || this.noMoreVideos) {
+        if (this.loading) {
             return;
         }
         this.loading = true;
 
         try {
-            const playlist = await VideoFetcher.fetch(this.website, this.board, count, this.playlist.hashes());
-            if (playlist.length < count) {
-                this.noMoreVideos = true;
-            }
-
+            const playlist = await this.videoFetcher.fetch(this.website, this.board, count, this.playlist.hashes());
             this.playlist.add(playlist);
         } catch (e) {
             Tooltip.show(this.container.querySelector('.plyr__controls'), e.toString(), 5000);
+            console.error(e);
         }
 
         let exceededVideos = this.playlist.items.length - this.counts().total;

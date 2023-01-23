@@ -1,5 +1,13 @@
 class VideoFetcher {
-    static async fetch(website, board, count, hashes) {
+    constructor() {
+        this.noMoreVideos = false;
+    }
+
+    async fetch(website, board, count, hashes) {
+        if (this.noMoreVideos) {
+            return [];
+        }
+
         const videos = await axios.post('/api/video/fetch', {
             website: website,
             board: board,
@@ -7,7 +15,7 @@ class VideoFetcher {
             hashes: hashes
         });
 
-        return videos.data.map(function (video) {
+        const result = videos.data.map(function (video) {
             return {
                 type: 'video',
                 title: video.name,
@@ -20,6 +28,12 @@ class VideoFetcher {
                 url_hash: video.url_hash
             };
         });
+
+        if (result.length < count) {
+            this.noMoreVideos = true;
+        }
+
+        return result;
     }
 }
 
