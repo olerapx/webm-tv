@@ -3,7 +3,7 @@
 }
 
 .plyr-playlist-wrapper {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 1);
     position: relative;
 }
 
@@ -11,7 +11,6 @@
     user-select: none;
     position: relative;
     padding: 0 1rem;
-    box-sizing: border-box;
 }
 
 .plyr-playlist-wrapper ul {
@@ -37,13 +36,7 @@
 .plyr-playlist-wrapper .plyr-playlist li a {
     text-decoration: none;
     color: #e7e7e7;
-    outline: none;
     padding: 0.5em 0.25em 1em;
-    vertical-align: middle;
-}
-
-.plyr-playlist-wrapper .plyr-playlist li:last-child a {
-    border-bottom: 0;
 }
 
 .plyr-playlist li a:hover,

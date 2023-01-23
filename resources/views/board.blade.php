@@ -15,8 +15,8 @@
                 <template class="js-plyr-playlist-item-template">
                     <li class="playlist-item">
                         <a class="flex flex-col" x-on:click="$dispatch('board-playlist-select', {element: $el})">
-                            <span class="plyr-minititle"></span>
                             <img class="plyr-miniposter" />
+                            <span class="plyr-minititle"></span>
                         </a>
                     </li>
                 </template>
