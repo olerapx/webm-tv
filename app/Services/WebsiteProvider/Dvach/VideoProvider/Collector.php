@@ -6,32 +6,32 @@ namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 class Collector
 {
     const MAX_TOTAL_REQUESTS = 20;
-    const PARALLEL = 5;
+    const PARALLEL = 3;
 
     const API_WEBM = 6;
     const API_MP4 = 10;
 
-    private array $hashed = [];
-    private array $plain = [];
-
     private \App\Services\Http $http;
+    private \App\Services\Video\HashChecker $hashChecker;
 
     public function __construct(
-        \App\Services\Http $http
+        \App\Services\Http $http,
+        \App\Services\Video\HashChecker $hashChecker
     ) {
         $this->http = $http;
+        $this->hashChecker = $hashChecker;
     }
 
     /**
      * @return \App\Contracts\Video[]
      */
-    public function collect(string $board, array $threadIds, int $count, array $hashes): array
+    public function collect(string $board, array $threadIds, int $count, array $playlistHashes): array
     {
         if (!$threadIds || !$count) {
             return [];
         }
 
-        $hashes = array_flip($hashes);
+        $playlistHashes = array_flip($playlistHashes);
         $threadIds = array_slice($threadIds, 0, self::MAX_TOTAL_REQUESTS);
 
         $result = [];
@@ -43,22 +43,18 @@ class Collector
                 $posts = $response['threads'][0]['posts'] ?? [];
 
                 foreach ($this->videosFromPosts($posts) as $video) {
-                    if ($this->checkHashUnique($video, $hashes)) {
+                    if ($this->hashChecker->checkUnique($video, $playlistHashes)) {
                         $result[] = $video;
                     }
 
                     if (count($result) == $count) {
-                        return $result;
+                        return \App\Services\Video\Sorter::sort($result);
                     }
                 }
             }
         }
 
-        usort($result, function (\App\Contracts\Video $a, \App\Contracts\Video $b) {
-            return $b->getSortOrder() <=> $a->getSortOrder();
-        });
-
-        return $result;
+        return \App\Services\Video\Sorter::sort($result);
     }
 
     /**
@@ -106,23 +102,5 @@ class Collector
             self::API_MP4 => \App\Enums\VideoType::MP4,
             default => null
         };
-    }
-
-    private function checkHashUnique(\App\Contracts\Video $video, array $hashes): bool
-    {
-        $hasHashed = $hasPlain = true;
-        [$hash, $urlHash] = [$video->getHash(), $video->getUrlHash()];
-
-        if ($hash !== null && !isset($this->hashed[$hash]) && !isset($hashes[$hash])) {
-            $hasHashed = false;
-            $this->hashed[$video->getHash()] = $video;
-        }
-
-        if (!isset($this->plain[$urlHash]) && !isset($hashes[$urlHash])) {
-            $hasPlain = false;
-            $this->plain[$video->getUrlHash()] = $video;
-        }
-
-        return !$hasHashed && !$hasPlain;
     }
 }

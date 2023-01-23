@@ -61,7 +61,7 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
         return $result;
     }
 
-    public function getVideos(string $board, ?int $count, array $hashes): array
+    public function getVideos(string $board, ?int $count, array $playlistHashes): array
     {
         if ($count === null || $count < 1 || $count > self::MAX_VIDEOS) {
             $count = self::MAX_VIDEOS;
@@ -69,7 +69,7 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
 
         try {
             $ids = $this->getThreadIds($board);
-            return $this->collector->collect($board, $ids, $count, $hashes);
+            return $this->collector->collect($board, $ids, $count, $playlistHashes);
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error($e->getMessage());
             return [];

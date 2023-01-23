@@ -9,7 +9,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(\App\Contracts\WebsiteProvider::class, \App\Services\WebsiteProvider::class);
-        $this->app->bind(\App\Contracts\Downloader::class, \App\Services\Downloader::class);
+        $this->app->bind(\App\Contracts\Downloader::class, \App\Services\Video\Downloader::class);
         $this->app->singleton(\App\Services\Http::class);
         $this->app->singleton(\App\Models\Breadcrumbs::class);
     }
