@@ -1,5 +1,4 @@
 .modal {
-    pointer-events:none;
     position:fixed;
     top:0;
     right:0;
@@ -22,7 +21,6 @@
 }
 
 .modal.displaying {
-    pointer-events:auto;
     visibility:visible;
     opacity:1
 }
