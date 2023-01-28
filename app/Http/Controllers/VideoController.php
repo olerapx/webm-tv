@@ -22,11 +22,11 @@ class VideoController
 
         $provider = $this->websiteProvider->getAll()[$website] ?? null;
         if (!$provider) {
-            throw new \Symfony\Component\HttpKernel\Exception\HttpException(400, 'Unsupported provider');
+            throw new \Symfony\Component\HttpKernel\Exception\HttpException(400, __('Unsupported website'));
         }
 
         if (!in_array($board, array_keys($provider->getVideoProvider()->getBoards()))) {
-            throw new \Symfony\Component\HttpKernel\Exception\HttpException(400, 'Unsupported board');
+            throw new \Symfony\Component\HttpKernel\Exception\HttpException(400, __('Unsupported board'));
         }
 
         return response()->json($provider->getVideoProvider()->getVideos($board, $count, $playlistHashes));

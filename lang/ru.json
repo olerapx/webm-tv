@@ -1,0 +1,10 @@
+{
+    "Looks like the board does not contain videos.": "Похоже, что на этой борде нет видео.",
+    "Try another one.": "Попробуйте другую.",
+    "Search boards...": "Поиск по бордам...",
+    "Unsupported website": "Неподдерживаемый сайт",
+    "Unsupported board": "Неподдерживаемая борда",
+    "These credentials do not match our records.": "У нас нет аккаунта с таким именем и паролем.",
+    "The provided password is incorrect.": "Пароль неверен.",
+    "Too many login attempts. Please try again in :seconds seconds.": "Слишком много попыток входа. Попробуйте еще раз через :seconds с."
+}

@@ -36,7 +36,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'name' => trans('auth.failed'),
+                'name' => __('These credentials do not match our records.'),
             ]);
         }
 
@@ -54,7 +54,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'name' => trans('auth.throttle', [
+            'name' => __('Too many login attempts. Please try again in :seconds seconds.', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),

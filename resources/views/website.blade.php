@@ -6,7 +6,7 @@
             <div class="relative w-full lg:w-1/3 px-4">
                 <input type="search"
                        class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                       placeholder="Search boards..."
+                       placeholder="{{ __('Search boards...') }}"
                        x-init="component.setElement($el); component.search()"
                        x-on:input="component.search()"
                        x-on:paste="component.search()"

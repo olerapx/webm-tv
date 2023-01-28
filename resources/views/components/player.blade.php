@@ -12,8 +12,8 @@
                 <div class="inline-flex">
                     <div class="pt-0.5">{!! $svg('info') !!}</div>
                     <div class="font-bold drop-shadow-md">
-                        <span>Looks like the board does not contain videos.</span>
-                        <a class="underline" href="{{ url("/{$website->getCode()->value}") }}">Try another one.</a>
+                        <span>{{ __('Looks like the board does not contain videos.') }}</span>
+                        <a class="underline" href="{{ url("/{$website->getCode()->value}") }}">{{ __('Try another one.') }}</a>
                     </div>
                 </div>
             </div>
