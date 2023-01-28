@@ -13,6 +13,7 @@ class Player {
         this.board = board;
         this.inited = false;
         this.loading = false;
+        this.noVideos = false;
 
         this.playlist = new Playlist();
         this.videoFetcher = new VideoFetcher();
@@ -28,7 +29,12 @@ class Player {
             await this.select(0);
 
             this._initControls();
-            this.inited = true;
+
+            if (this.playlist.items.length) {
+                this.inited = true;
+            } else {
+                this.noVideos = true;
+            }
         });
 
         this.player.on('ended', () => {

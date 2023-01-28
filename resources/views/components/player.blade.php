@@ -4,8 +4,20 @@
 
     <div class="hidden animate-spin"></div>
 
-    <div x-show="!component.inited" class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
-        <div role="status">{!! $svg('loading') !!}</div>
+    <div x-show="!component.inited" class="absolute w-full h-full z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
+        <div x-show="component.loading" role="status">{!! $svg('loading') !!}</div>
+
+        <div x-show="component.noVideos">
+            <div class="text-gray-400 text-lg" role="alert">
+                <div class="inline-flex">
+                    <div class="pt-0.5">{!! $svg('info') !!}</div>
+                    <div class="font-bold drop-shadow-md">
+                        <span>Looks like the board does not contain videos.</span>
+                        <a class="underline" href="{{ url("/{$website->getCode()->value}") }}">Try another one.</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <video
