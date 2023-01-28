@@ -17,6 +17,7 @@ import 'tippy.js/dist/tippy.css'
 import './board-search'
 
 import './player'
+import './player/state'
 import './player/player-hotkeys'
 import './player/playlist'
 import './player/playlist-item'

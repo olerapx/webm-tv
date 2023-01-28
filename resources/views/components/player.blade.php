@@ -4,10 +4,10 @@
 
     <div class="hidden animate-spin"></div>
 
-    <div x-show="!component.inited" class="absolute w-full h-full z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
-        <div x-show="component.loading" role="status">{!! $svg('loading') !!}</div>
+    <div x-show="!component.state.isInited()" class="absolute w-full h-full z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
+        <div x-show="component.state.isLoading()" role="status">{!! $svg('loading') !!}</div>
 
-        <div x-show="component.noVideos">
+        <div x-show="component.state.isNoVideos()">
             <div class="text-gray-400 text-lg" role="alert">
                 <div class="inline-flex">
                     <div class="pt-0.5">{!! $svg('info') !!}</div>
@@ -41,7 +41,7 @@
                 </li>
             </template>
 
-            <li x-show="component.loading" class="playlist-item-loader flex flex-col justify-center">
+            <li x-show="component.state.isLoading()" class="playlist-item-loader flex flex-col justify-center">
                 <div class="flex flex-col items-center">{!! $svg('loading') !!}</div>
             </li>
         </ul>

@@ -11,10 +11,8 @@ class Player {
         this.container = container;
         this.website = website;
         this.board = board;
-        this.inited = false;
-        this.loading = false;
-        this.noVideos = false;
 
+        this.state = new PlayerState();
         this.playlist = new Playlist();
         this.videoFetcher = new VideoFetcher();
     }
@@ -30,11 +28,11 @@ class Player {
 
             this._initControls();
 
-            if (this.playlist.items.length) {
-                this.inited = true;
-            } else {
-                this.noVideos = true;
+            if (!this.playlist.items.length) {
+                this.state.setNoVideos();
             }
+
+            this.state.setInited();
         });
 
         this.player.on('ended', () => {
@@ -45,10 +43,10 @@ class Player {
     }
 
     async _loadVideos(count) {
-        if (this.loading || this.videoFetcher.noMoreVideos) {
+        if (this.state.isLoading() || this.videoFetcher.noMoreVideos) {
             return;
         }
-        this.loading = true;
+        this.state.setLoading(true);
 
         try {
             const playlist = await this.videoFetcher.fetch(this.website, this.board, count, this.playlist.hashes());
@@ -64,7 +62,7 @@ class Player {
         }
 
         this._play(this.playlist.currentIndex);
-        this.loading = false;
+        this.state.setLoading(false);
     }
 
     _initControls () {
