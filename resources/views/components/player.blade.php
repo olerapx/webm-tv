@@ -1,10 +1,10 @@
-<div class="flex flex-col md:flex-row w-full h-screen mt-8"
+<div class="flex flex-col md:flex-row w-full h-screen mt-8 overflow-hidden"
      x-data="{component: new Player($el, '{{ $website->getCode()->value }}', '{{ $board }}')}"
      x-init="component.init(); $el.scrollIntoView({behavior: 'smooth'});">
 
     <div class="hidden animate-spin inline w-8 h-8 mr-2 text-gray-200"></div>
 
-    <div x-show="!component.state.isInited()" class="absolute w-full h-full z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
+    <div x-show="component.state.isInited() === false" class="absolute w-full h-full z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
         <div x-show="component.state.isLoading()" role="status">{!! $svg('loading') !!}</div>
 
         <div x-show="component.state.isNoVideos()">
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <div class="w-full h-screen overflow-y-auto md:overflow-hidden bg-black flex items-center shrink-0 md:shrink">
+    <div class="w-full overflow-hidden bg-black flex items-center shrink-0 md:shrink h-[50vh] md:h-screen">
         <video
             controls
             preload="auto"
@@ -30,13 +30,11 @@
         </video>
     </div>
 
-{{-- SHOW ELEMENT IN SCROLL BAR BUT DO NOT SCROLL THE SCREEN ; SHOW SOME CONTROL TO SCROLL TO PLAYLIST ON MOBILE; AFTER SELECTING THE ITEM (CLICK) SCROLL THE VIDEO BACK INTO VIEW    --}}
-
-    <div class="plyr-playlist-wrapper">
+    <div class="plyr-playlist-wrapper overflow-y-auto">
         <ul class="js-plyr-playlist plyr-playlist flex flex-wrap justify-center md:block">
             <template x-for="(item, index) in component.playlist.items">
                 <li class="playlist-item"
-                    x-init="$watch('item.playing', val => { val })"
+                    x-init="$watch('item.playing', val => { val && $el.scrollIntoView({block: 'nearest', inline: 'nearest'}); })"
                     :class="{'pls-playing': item.playing}">
                     <a class="flex flex-col" x-on:click="await component.select(index);">
                         <img class="plyr-miniposter" x-bind:src="item.video.poster" />
