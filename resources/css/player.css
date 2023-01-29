@@ -4,14 +4,13 @@
 }
 
 .plyr-playlist-wrapper {
-    background: rgba(0, 0, 0, 1);
+    background: rgba(0, 0, 0, 0.92);
     position: relative;
 }
 
 .plyr-playlist-wrapper .plyr-playlist {
     user-select: none;
     position: relative;
-    padding: 0 1rem;
 }
 
 .plyr-playlist-wrapper ul {
@@ -26,33 +25,24 @@
 
 .plyr-playlist-wrapper .plyr-playlist li.pls-playing,
 .plyr-playlist-wrapper .plyr-playlist li:hover {
-    color: #3498db;
-    background-color: rgba(255, 255, 255, 0.09);
+    color: var(--blue-accent);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .plyr-playlist-wrapper .plyr-playlist li.pls-playing a {
-    color: #3498db;
-}
-
-.plyr-playlist-wrapper .plyr-playlist li a {
-    text-decoration: none;
-    color: #e7e7e7;
-    padding: 0.5em 0.25em 1em;
+    color: var(--blue-accent);
 }
 
 .plyr-playlist li a:hover,
 .plyr-playlist li a:focus,
 .plyr-playlist li a:active {
-    color: #04a9f3;
+    color: var(--blue-accent);
 }
 
 .plyr-miniposter {
-    width: 16em;
-    height: 9em;
     object-fit: cover;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    margin-right: 10px;
     border-radius: 0;
 }
