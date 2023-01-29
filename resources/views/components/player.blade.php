@@ -43,8 +43,8 @@
                 </li>
             </template>
 
-            <li x-show="component.state.isLoading()" class="playlist-item-loader flex flex-col justify-center">
-                <div class="flex flex-col items-center">{!! $svg('loading') !!}</div>
+            <li x-show="component.state.isLoading()" class="playlist-item-loader flex flex-col justify-center items-center">
+                <div class="flex flex-col justify-center items-center h-36 w-64">{!! $svg('loading') !!}</div>
             </li>
         </ul>
     </div>
