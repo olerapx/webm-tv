@@ -1,4 +1,4 @@
-<div class="flex w-full h-screen mt-8"
+<div class="flex flex-col md:flex-row w-full h-screen mt-8"
      x-data="{component: new Player($el, '{{ $website->getCode()->value }}', '{{ $board }}')}"
      x-init="component.init(); $el.scrollIntoView({behavior: 'smooth'});">
 
@@ -20,19 +20,23 @@
         </div>
     </div>
 
-    <video
-        controls
-        preload="auto"
-        class="js-plyr-video"
-        data-website="{{ $website->getCode()->value }}"
-        data-board="{{ $board }}">
-    </video>
+    <div class="w-full h-screen overflow-y-auto md:overflow-hidden bg-black flex items-center shrink-0 md:shrink">
+        <video
+            controls
+            preload="auto"
+            class="js-plyr-video"
+            data-website="{{ $website->getCode()->value }}"
+            data-board="{{ $board }}">
+        </video>
+    </div>
+
+{{-- SHOW ELEMENT IN SCROLL BAR BUT DO NOT SCROLL THE SCREEN ; SHOW SOME CONTROL TO SCROLL TO PLAYLIST ON MOBILE; AFTER SELECTING THE ITEM (CLICK) SCROLL THE VIDEO BACK INTO VIEW    --}}
 
     <div class="plyr-playlist-wrapper">
-        <ul class="js-plyr-playlist plyr-playlist">
+        <ul class="js-plyr-playlist plyr-playlist flex flex-wrap justify-center md:block">
             <template x-for="(item, index) in component.playlist.items">
                 <li class="playlist-item"
-                    x-init="$watch('item.playing', val => { val && $el.scrollIntoView({block: 'nearest', inline: 'nearest'}); })"
+                    x-init="$watch('item.playing', val => { val })"
                     :class="{'pls-playing': item.playing}">
                     <a class="flex flex-col" x-on:click="await component.select(index);">
                         <img class="plyr-miniposter" x-bind:src="item.video.poster" />
@@ -52,6 +56,6 @@
         <button type="button" data-reference="[data-plyr='play']" data-position="after" x-show="component.playlist.next() !== null" class="plyr__controls__item plyr__control" x-on:click="await component.selectNext()">{!! $svg('next') !!}</button>
         <button type="button" data-reference="[data-plyr='settings']" data-position="before" class="plyr__controls__item plyr__control" x-on:click="component.download()">{!! $svg('download') !!}</button>
         <button type="button" data-reference="[data-plyr='settings']" data-position="before" class="plyr__controls__item plyr__control js-plyr-share-button" x-on:click="component.share()">{!! $svg('share') !!}</button>
-        <button type="button" data-reference="[data-plyr='settings']" data-position="before" x-init="HotkeyTooltip.add($el)" class="plyr__controls__item plyr__control">{!! $svg('hotkeys') !!}</button>
+        <button type="button" data-reference="[data-plyr='settings']" data-position="before" x-init="HotkeyTooltip.add($el)" class="hidden md:block plyr__controls__item plyr__control">{!! $svg('hotkeys') !!}</button>
     </template>
 </div>
