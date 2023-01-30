@@ -2,7 +2,8 @@ class HotkeyTooltip {
     static add(element) {
         tippy(element, {
             content: this.hint(),
-            allowHTML: true
+            allowHTML: true,
+            appendTo: 'parent'
         })
     }
 

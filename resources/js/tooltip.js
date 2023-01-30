@@ -6,7 +6,8 @@ class Tooltip {
 
         let instance = tippy(element, {
             content: content,
-            trigger: 'manual'
+            trigger: 'manual',
+            appendTo: 'parent'
         });
 
         instance.show();
