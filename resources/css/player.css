@@ -3,6 +3,16 @@
     height: 100%;
 }
 
+.plyr.plyr--video .plyr__controls {
+    padding-bottom: 2.5rem;
+}
+
+@media (min-width:640px){
+    .plyr.plyr--video .plyr__controls {
+        padding-bottom: 0;
+    }
+}
+
 .plyr-playlist-wrapper {
     background: rgba(0, 0, 0, 0.92);
     position: relative;
