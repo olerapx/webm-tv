@@ -2,8 +2,8 @@
 
 TAG = $1
 
-git pull
-git checkout TAG
+git fetch --tags --force
+git checkout tags/TAG
 
 php8.2 artisan migrate
 
