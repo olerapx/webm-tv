@@ -3,7 +3,7 @@
 TAG=$1
 
 git fetch --tags --force
-git checkout tags/TAG
+git checkout tags/$TAG
 
 php8.2 artisan migrate --force
 
