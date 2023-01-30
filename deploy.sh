@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TAG = $1
+TAG=$1
 
 git fetch --tags --force
 git checkout tags/TAG
