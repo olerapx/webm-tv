@@ -5,7 +5,7 @@ TAG = $1
 git fetch --tags --force
 git checkout tags/TAG
 
-php8.2 artisan migrate
+php8.2 artisan migrate --force
 
 npm install
 npm run build
