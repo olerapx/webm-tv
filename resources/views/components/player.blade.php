@@ -1,4 +1,4 @@
-<div class="flex flex-col md:flex-row w-full h-screen mt-8 overflow-hidden"
+<div class="flex flex-col md:flex-row w-full h-screen overflow-hidden"
      x-data="{component: new Player($el, '{{ $website->getCode()->value }}', '{{ $board }}')}"
      x-cloak
      x-init="component.init(); $el.scrollIntoView({behavior: 'smooth'});">
@@ -32,7 +32,7 @@
     </div>
 
     <div class="plyr-playlist-wrapper overflow-y-auto">
-        <ul class="js-plyr-playlist plyr-playlist flex flex-wrap justify-center md:block mr-2">
+        <ul class="js-plyr-playlist plyr-playlist flex flex-wrap justify-center md:block mr-2 mt-1 md:mt-0">
             <template x-for="(item, index) in component.playlist.items">
                 <li class="playlist-item"
                     x-init="$watch('item.playing', val => { val && $el.scrollIntoView({block: 'nearest', inline: 'nearest'}); })"
