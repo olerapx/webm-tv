@@ -9,7 +9,7 @@ class HotkeyTooltip {
 
     static hint() {
         return `
-            <b>A / D</b> - Previous / Next<br>
+            <b>A / D</b> - Prev / Next<br>
             <b>W</b> - Copy URL<br>
             <b>S</b> - Download<br>
             <b>F</b> - Fullscreen<br>
