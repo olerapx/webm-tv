@@ -1,6 +1,6 @@
 <nav x-data="{ showLogin: false }" class="bg-white border-b border-gray-100" @keydown.escape="showLogin = false">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-14">
+        <div class="flex justify-between h-[var(--header-height)]">
             <div class="flex">
                 <div class="flex items-center">
                     <a href="{{ route('index') }}">

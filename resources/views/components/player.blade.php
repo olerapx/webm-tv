@@ -1,7 +1,7 @@
-<div class="flex flex-col md:flex-row w-full h-screen overflow-hidden"
+<div class="flex flex-col md:flex-row w-full h-[calc(100vh-var(--header-height)-1px)] overflow-hidden"
      x-data="{component: new Player($el, '{{ $website->getCode()->value }}', '{{ $board }}')}"
      x-cloak
-     x-init="component.init(); $el.scrollIntoView({behavior: 'smooth'});">
+     x-init="component.init()">
 
     <div class="hidden animate-spin inline w-8 h-8 mr-2 text-gray-200"></div>
 
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="w-full overflow-hidden bg-black flex items-center shrink-0 md:shrink h-[50vh] md:h-screen">
+    <div class="w-full overflow-hidden bg-black flex items-center shrink-0 md:shrink h-[50vh] md:h-[calc(100vh-var(--header-height)-1px)]">
         <video
             controls
             preload="auto"

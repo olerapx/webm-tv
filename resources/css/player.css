@@ -3,12 +3,12 @@
     height: 100%;
 }
 
-.plyr.plyr--video .plyr__controls {
+.plyr.plyr--video:fullscreen .plyr__controls {
     padding-bottom: 2.5rem;
 }
 
 @media (min-width:640px){
-    .plyr.plyr--video .plyr__controls {
+    .plyr.plyr--video:fullscreen .plyr__controls {
         padding-bottom: 0;
     }
 }
