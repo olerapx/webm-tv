@@ -53,6 +53,7 @@
     <template class="js-plyr-buttons">
         <button type="button" data-reference="[data-plyr='play']" data-position="before" x-show="component.playlist.prev() !== null" class="plyr__controls__item plyr__control" x-on:click="await component.selectPrev()">{!! $svg('prev') !!}</button>
         <button type="button" data-reference="[data-plyr='play']" data-position="after" x-show="component.playlist.next() !== null" class="plyr__controls__item plyr__control" x-on:click="await component.selectNext()">{!! $svg('next') !!}</button>
+        <button type="button" data-reference=".plyr__volume" data-position="after" class="flex-grow"></button>
         <button type="button" data-reference="[data-plyr='settings']" data-position="before" class="plyr__controls__item plyr__control" x-on:click="component.download()">{!! $svg('download') !!}</button>
         <button type="button" data-reference="[data-plyr='settings']" data-position="before" class="plyr__controls__item plyr__control js-plyr-share-button" x-on:click="component.share()">{!! $svg('share') !!}</button>
         <button type="button" data-reference="[data-plyr='settings']" data-position="before" x-init="HotkeyTooltip.add($el)" class="hidden lg:block plyr__controls__item plyr__control">{!! $svg('hotkeys') !!}</button>

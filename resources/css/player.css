@@ -3,6 +3,12 @@
     height: 100%;
 }
 
+.plyr.plyr--video .plyr__controls {
+    justify-content: start;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
 .plyr.plyr--video:fullscreen .plyr__controls {
     padding-bottom: 2.5rem;
 }
@@ -11,6 +17,13 @@
     .plyr.plyr--video:fullscreen .plyr__controls {
         padding-bottom: 0;
     }
+}
+
+.plyr__progress__container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
 }
 
 .plyr-playlist-wrapper {

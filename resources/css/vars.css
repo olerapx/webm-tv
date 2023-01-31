@@ -1,4 +1,7 @@
 :root {
     --blue-accent: #00b2ff;
     --header-height: 3rem;
+
+    --plyr-range-track-height: 2px;
+    --plyr-range-thumb-height: 5px;
 }
