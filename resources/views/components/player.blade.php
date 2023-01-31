@@ -37,7 +37,7 @@
                 <li class="playlist-item"
                     x-init="$watch('item.playing', val => { val && $el.scrollIntoView({block: 'nearest', inline: 'nearest'}); })"
                     :class="{'pls-playing': item.playing}">
-                    <a class="flex flex-col text-gray-200 text-lg py-2 px-2" x-on:click="await component.select(index);">
+                    <a class="flex flex-col text-gray-200 text-md font-semibold py-2 px-2" x-on:click="await component.select(index);">
                         <img class="plyr-miniposter h-36 w-64" x-bind:src="item.video.poster" />
                         <span x-text="item.video.title"></span>
                     </a>
