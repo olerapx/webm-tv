@@ -3,10 +3,11 @@ class PlayerState {
         this.inited = false;
         this.loading = false;
         this.noVideos = false;
+        this.closedBoard = false;
     }
 
     isInited() {
-        return this.inited && !this.noVideos;
+        return this.inited && !this.noVideos && !this.closedBoard;
     }
 
     setInited() {
@@ -21,8 +22,16 @@ class PlayerState {
         this.loading = loading;
     }
 
+    isClosedBoard() {
+        return this.closedBoard;
+    }
+
+    setClosedBoard(value) {
+        this.closedBoard = value;
+    }
+
     isNoVideos() {
-        return this.noVideos;
+        return this.noVideos && !this.closedBoard;
     }
 
     setNoVideos() {

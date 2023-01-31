@@ -6,5 +6,11 @@
     "Unsupported board": "Неподдерживаемая борда",
     "These credentials do not match our records.": "У нас нет аккаунта с таким именем и паролем.",
     "The provided password is incorrect.": "Пароль неверен.",
-    "Too many login attempts. Please try again in :seconds seconds.": "Слишком много попыток входа. Попробуйте еще раз через :seconds с."
+    "Too many login attempts. Please try again in :seconds seconds.": "Слишком много попыток входа. Попробуйте еще раз через :seconds с.",
+    "This board is closed.": "Это закрытая борда.",
+    "To get access to the board, follow the": "Чтобы получить доступ к борде, следуйте",
+    "instructions": "инструкциям",
+    "and enter the obtained access code into the field below.": "и введите полученный код доступа в поле ниже.",
+    "Access Code": "Код доступа",
+    "Enter": "Ввести"
 }

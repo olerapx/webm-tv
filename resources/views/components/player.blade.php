@@ -5,7 +5,9 @@
 
     <div class="hidden animate-spin inline w-8 h-8 mr-2 text-gray-200"></div>
 
-    <div x-cloak x-show="component.state.isInited() === false" class="absolute w-full h-full z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
+    <div x-cloak
+         x-show="component.state.isInited() === false"
+         class="absolute w-full h-full z-50 overflow-hidden bg-gray-700 flex flex-col items-center justify-center">
         <div x-show="component.state.isLoading()" role="status">{!! $svg('loading') !!}</div>
 
         <div x-show="component.state.isNoVideos()">
@@ -17,6 +19,28 @@
                         <a class="underline" href="{{ url("/{$website->getCode()->value}") }}">{{ __('Try another one.') }}</a>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div x-show="component.state.isClosedBoard()">
+            <div class="text-gray-400 text-lg mx-5 flex flex-col items-center" role="alert">
+                <div class="inline-flex">
+                    <div class="pt-0.5">{!! $svg('info') !!}</div>
+                    <div class="font-bold drop-shadow-md"><span>{{ __('This board is closed.') }}</span></div>
+                </div>
+
+                <div class="my-4 max-w-lg text-center">{{ __('To get access to the board, follow the') }}
+                    <a class="underline" href="#">{{ __('instructions') }}</a>,
+                    {{ __('and enter the obtained access code into the field below.') }}
+                </div>
+
+                <form method="POST" x-data="{access: new AccessCode($el)}" x-on:submit.prevent="await access.submit()">
+                    @csrf
+                    <div class="inline-flex mt-5">
+                        <x-text-input id="code" class="block mx-3 text-black" type="text" name="code" placeholder="{{ __('Access Code') }}" required autocomplete="off" />
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-lg px-2">{{ __('Enter') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -70,6 +70,8 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
         try {
             $ids = $this->getThreadIds($board);
             return $this->collector->collect($board, $ids, $count, $playlistHashes);
+        } catch (\App\Exceptions\PrivateBoardException $e) {
+            throw $e;
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error($e->getMessage());
             return [];

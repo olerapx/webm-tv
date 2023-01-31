@@ -13,6 +13,12 @@ class VideoFetcher {
             board: board,
             count: count,
             hashes: hashes
+        }).catch(function (e) {
+            if (e && e.response && e.response.data && e.response.data.code === PlayerErrors.CLOSED_BOARD()) {
+                throw e.response.data.code;
+            }
+
+            throw e;
         });
 
         const result = videos.data.map(function (video) {

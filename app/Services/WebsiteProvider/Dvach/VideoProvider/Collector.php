@@ -75,7 +75,17 @@ class Collector
                 if (!$promisesLeft) {
                     $aggregate->resolve($result);
                 }
-            }
+            },
+            function ($value, $key, PromiseInterface $aggregate) {
+                if (!$value instanceof \GuzzleHttp\Exception\ServerException) {
+                    return;
+                }
+
+                if ($value->getCode() === 500 && strpos($value->getMessage(), 'Not found') !== false) {
+                    $aggregate->resolve([]);
+                    throw new \App\Exceptions\PrivateBoardException();
+                }
+            },
         )->wait();
 
         return $result;

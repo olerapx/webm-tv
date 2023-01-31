@@ -43,7 +43,7 @@ class Player {
     }
 
     async _loadVideos(count) {
-        if (this.state.isLoading() || this.videoFetcher.noMoreVideos) {
+        if (this.state.isLoading() || this.videoFetcher.noMoreVideos || this.state.isClosedBoard()) {
             return;
         }
         this.state.setLoading(true);
@@ -52,8 +52,13 @@ class Player {
             const playlist = await this.videoFetcher.fetch(this.website, this.board, count, this.playlist.hashes());
             this.playlist.add(playlist);
         } catch (e) {
-            Tooltip.show(this.container.querySelector('.plyr__controls'), e.toString(), 5000);
             console.error(e);
+
+            if (e === PlayerErrors.CLOSED_BOARD()) {
+                this.state.setLoading(false);
+                this.state.setClosedBoard(true);
+                return;
+            }
         }
 
         let exceededVideos = this.playlist.items.length - this.counts().total;
