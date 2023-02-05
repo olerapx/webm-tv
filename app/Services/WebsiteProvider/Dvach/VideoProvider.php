@@ -61,15 +61,15 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
         return $result;
     }
 
-    public function getVideos(string $board, ?int $count, array $playlistHashes): array
+    public function getVideos(\App\Contracts\Video\FetchRequest $request): array
     {
-        if ($count === null || $count < 1 || $count > self::MAX_VIDEOS) {
-            $count = self::MAX_VIDEOS;
+        if ($request->getCount() === null || $request->getCount() < 1 || $request->getCount() > self::MAX_VIDEOS) {
+            $request->setCount(self::MAX_VIDEOS);
         }
 
         try {
-            $ids = $this->getThreadIds($board);
-            return $this->collector->collect($board, $ids, $count, $playlistHashes);
+            $ids = $this->getThreadIds($request->getBoard());
+            return $this->collector->collect($request, $ids);
         } catch (\App\Exceptions\PrivateBoardException $e) {
             throw $e;
         } catch (\Throwable $e) {

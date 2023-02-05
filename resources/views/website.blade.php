@@ -1,3 +1,5 @@
+@php /** @var \App\Contracts\Website $website */ @endphp
+
 <x-app-layout>
     <x-page-title />
 

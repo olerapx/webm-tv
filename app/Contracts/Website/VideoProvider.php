@@ -10,5 +10,5 @@ interface VideoProvider
     /**
      * @return \App\Contracts\Video[]
      */
-    public function getVideos(string $board, ?int $count, array $playlistHashes): array;
+    public function getVideos(\App\Contracts\Video\FetchRequest $fetchRequest): array;
 }

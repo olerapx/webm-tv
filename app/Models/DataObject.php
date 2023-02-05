@@ -12,9 +12,15 @@ abstract class DataObject implements \JsonSerializable
         $this->data = $data;
     }
 
-    public function getAttribute(string $key)
+    public function getAttribute(string $key): mixed
     {
         return $this->data[$key] ?? null;
+    }
+
+    public function setAttribute(string $key, $value): self
+    {
+        $this->data[$key] = $value;
+        return $this;
     }
 
     public function jsonSerialize(): mixed

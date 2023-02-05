@@ -15,20 +15,16 @@ class VideoController
 
     public function fetch(\App\Http\Requests\Video\FetchRequest $request): \Illuminate\Http\JsonResponse
     {
-        $website = $request->get('website');
-        $board = $request->get('board');
-        $count = $request->get('count');
-        $playlistHashes = $request->get('hashes', []);
-
-        $provider = $this->websiteProvider->getAll()[$website] ?? null;
+        $provider = $this->websiteProvider->getAll()[$request->input('website')] ?? null;
         if (!$provider) {
             throw new \Symfony\Component\HttpKernel\Exception\HttpException(400, __('Unsupported website'));
         }
 
-        if (!in_array($board, array_keys($provider->getVideoProvider()->getBoards()))) {
+        if (!in_array($request->input('board'), array_keys($provider->getVideoProvider()->getBoards()))) {
             throw new \Symfony\Component\HttpKernel\Exception\HttpException(400, __('Unsupported board'));
         }
 
-        return response()->json($provider->getVideoProvider()->getVideos($board, $count, $playlistHashes));
+        $apiRequest = new \App\Models\Video\FetchRequest($request->input());
+        return response()->json($provider->getVideoProvider()->getVideos($apiRequest));
     }
 }

@@ -1,3 +1,5 @@
+@php /** @var \App\Contracts\Website $website */ @endphp
+
 <div class="my-1 px-4 w-1/2 md:w-1/3 lg:my-4 lg:px-4 lg:w-1/4">
     <div class="rounded-lg shadow-md hover:shadow-lg hover:border-gray-600 aspect-square p-4">
         <div class="rounded-full bg-slate-50 aspect-square shadow-inner p-4">

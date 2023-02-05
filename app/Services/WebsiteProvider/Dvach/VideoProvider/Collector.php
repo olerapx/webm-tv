@@ -10,6 +10,8 @@ class Collector
     const MAX_TOTAL_REQUESTS = 20;
     const PARALLEL = 5;
 
+    const COOKIE = 'usercode_auth';
+
     private \App\Services\Http $http;
     private \App\Services\Video\HashChecker $hashChecker;
 
@@ -24,21 +26,21 @@ class Collector
     /**
      * @return \App\Contracts\Video[]
      */
-    public function collect(string $board, array $threadIds, int $count, array $playlistHashes): array
+    public function collect(\App\Contracts\Video\FetchRequest $request, array $threadIds): array
     {
-        if (!$threadIds || !$count) {
+        if (!$threadIds || !$request->getCount()) {
             return [];
         }
 
-        $this->hashChecker->setPlaylist($playlistHashes);
+        $this->hashChecker->setPlaylist($request->getPlaylistHashes());
         $threadIds = array_slice($threadIds, 0, self::MAX_TOTAL_REQUESTS);
 
         $result = [];
 
         foreach (array_chunk($threadIds, self::PARALLEL) as $chunk) {
-            $result += $this->getVideosChunk($board, $chunk, $count);
+            $result += $this->getVideosChunk($request, $chunk);
 
-            if (count($result) == $count) {
+            if (count($result) == $request->getCount()) {
                 return \App\Services\Video\Sorter::sort($result);
             }
         }
@@ -46,16 +48,16 @@ class Collector
         return \App\Services\Video\Sorter::sort($result);
     }
 
-    private function getVideosChunk(string $board, array $chunk, int $count): array
+    private function getVideosChunk(\App\Contracts\Video\FetchRequest $request, array $chunk): array
     {
         $result = [];
 
-        $promises = $this->getRequestBatch($board, $chunk);
+        $promises = $this->getRequestBatch($request, $chunk);
         $promisesLeft = count($promises);
 
         \GuzzleHttp\Promise\Each::of(
             $promises,
-            function ($value, $i, PromiseInterface $aggregate) use (&$result, $count, &$promisesLeft) {
+            function ($value, $i, PromiseInterface $aggregate) use (&$result, $request, &$promisesLeft) {
                 if (\GuzzleHttp\Promise\Is::settled($aggregate)) {
                     return;
                 }
@@ -65,7 +67,7 @@ class Collector
                         $result[] = $video;
                     }
 
-                    if (count($result) == $count) {
+                    if (count($result) == $request->getCount()) {
                         $aggregate->resolve($result);
                         return;
                     }
@@ -81,7 +83,7 @@ class Collector
                     return;
                 }
 
-                if ($value->getCode() === 500 && strpos($value->getMessage(), 'Not found') !== false) {
+                if ($value->getCode() === 500 && str_contains($value->getMessage(), 'Not found')) {
                     $aggregate->resolve([]);
                     throw new \App\Exceptions\PrivateBoardException();
                 }
@@ -94,10 +96,12 @@ class Collector
     /**
      * @return PromiseInterface[]
      */
-    private function getRequestBatch(string $board, array $threadIds): array
+    private function getRequestBatch(\App\Contracts\Video\FetchRequest $request, array $threadIds): array
     {
-        return array_map(function ($id) use ($board) {
-            return $this->http->json(Url::url("{$board}/res/{$id}.json"));
+        return array_map(function ($id) use ($request) {
+            return $this->http->json(Url::url("{$request->getBoard()}/res/{$id}.json"), [
+                self::COOKIE => $request->getAccessCode()
+            ]);
         }, $threadIds);
     }
 }

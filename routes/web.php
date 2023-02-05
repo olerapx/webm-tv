@@ -13,6 +13,10 @@ Route::controller(\App\Http\Controllers\DownloadController::class)->group(functi
     Route::get('/download', 'download');
 });
 
+Route::controller(\App\Http\Controllers\ClosedBoardController::class)->group(function () {
+    Route::get('/howto/{website}', 'howto')->name('howto');
+});
+
 Route::controller(\App\Http\Controllers\IndexController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/{website}', 'website')->name('website');

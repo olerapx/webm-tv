@@ -12,5 +12,13 @@
     "instructions": "инструкциям",
     "and enter the obtained access code into the field below.": "и введите полученный код доступа в поле ниже.",
     "Access Code": "Код доступа",
-    "Enter": "Ввести"
+    "Enter": "Ввести",
+    "Getting usercode cookie for 2ch.hk": "Получение куки usercode для 2ch.hk",
+    "Navigate to 2ch.hk.": "Перейдите на 2ch.hk.",
+    "Leave a post or a comment. Do not violate the rules.": "Оставьте пост или комментарий. Не нарушайте правила.",
+    "Enter the following in the URL (do not paste):": "Введите следующий текст в строку URL (не копируйте):",
+    "Press ENTER.": "Нажмите ENTER.",
+    "Copy the value corresponding to": "Скопируйте значение, соответствующее",
+    "Example value: ": "Пример: ",
+    "That's it! Now you have the access code.": "Все! Теперь у вас есть код доступа."
 }

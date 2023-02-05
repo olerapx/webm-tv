@@ -1,3 +1,5 @@
+@php /** @var \App\Contracts\Website $website */ @endphp
+
 <div class="flex flex-col md:flex-row w-full h-[calc(100vh-var(--header-height)-1px)] overflow-hidden"
      x-data="{component: new Player($el, '{{ $website->getCode()->value }}', '{{ $board }}')}"
      x-cloak
@@ -30,12 +32,13 @@
                 </div>
 
                 <div class="my-4 max-w-lg text-center">{{ __('To get access to the board, follow the') }}
-                    <a class="underline" href="#">{{ __('instructions') }}</a>,
+                    <a class="underline" target="_blank" href="{{ url("/howto/{$website->getCode()->value}") }}">{{ __('instructions') }}</a>,
                     {{ __('and enter the obtained access code into the field below.') }}
                 </div>
 
-                <form method="POST" x-data="{access: new AccessCode($el)}" x-on:submit.prevent="await access.submit()">
+                <form method="POST" x-data="{access: new AccessCode($el)}" x-on:submit.prevent="access.submit()">
                     @csrf
+                    <input type="hidden" name="website" value="{{ $website->getCode()->value }}">
                     <div class="inline-flex mt-5">
                         <x-text-input id="code" class="block mx-3 text-black" type="text" name="code" placeholder="{{ __('Access Code') }}" required autocomplete="off" />
                         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-lg px-2">{{ __('Enter') }}</button>
