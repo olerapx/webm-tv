@@ -14,7 +14,7 @@
                     <li>{{ __('Leave a post or a comment. Do not violate the rules.') }}</li>
                     <li>
                         {{ __('Enter the following in the URL (do not paste):') }}
-                        <code class="bg-gray-800 shadow-2xl text-white p-1 rounded-md">javascript:prompt(document.cookie);</code>
+                        <code class="bg-gray-800 shadow-2xl text-white p-1 rounded-md">javascript:prompt(1, document.cookie);</code>
                     </li>
                     <li> {{ __('Press ENTER.') }}</li>
                     <li>
