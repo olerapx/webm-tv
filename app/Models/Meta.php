@@ -32,33 +32,34 @@ class Meta
     {
         try {
             [$name, $params] = $this->getCurrentRoute();
-        } catch (\App\Exceptions\UnnamedRouteException $e) {
-            return new \Illuminate\Support\Collection();
-        }
-
-        try {
             return $this->breadcrumbGenerator->generate($this->breadcrumbCallbacks, $name, $params);
         } catch (\Exception $e) {
             return new \Illuminate\Support\Collection();
         }
     }
 
-    public function metaDescription(): string
+    public function title(): string
+    {
+        return $this->generateMeta()['title'] ?? config('app.name');
+    }
+
+    public function description(): string
+    {
+        return $this->generateMeta()['desc'] ?? config('app.name');
+    }
+
+    private function generateMeta(): array
     {
         try {
             [$name, $params] = $this->getCurrentRoute();
-        } catch (\App\Exceptions\UnnamedRouteException $e) {
-            return config('app.name');
-        }
 
-        try {
             if (!isset($this->metaCallbacks[$name])) {
-                return config('app.name');
+                return [];
             }
 
-            return $this->metaCallbacks[$name](...$params)['desc'] ?? config('app.name');
+            return $this->metaCallbacks[$name](...$params);
         } catch (\Exception $e) {
-            return config('app.name');
+            return [];
         }
     }
 

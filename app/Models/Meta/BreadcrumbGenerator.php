@@ -10,7 +10,6 @@ class BreadcrumbGenerator
     public function generate(array $callbacks, string $name, array $params): \Illuminate\Support\Collection
     {
         $this->path = new \Illuminate\Support\Collection();
-        $this->callbacks = $callbacks;
 
         if (!isset($callbacks[$name])) {
             throw new \Exception($name);
