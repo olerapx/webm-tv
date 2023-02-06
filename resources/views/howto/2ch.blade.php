@@ -1,6 +1,4 @@
 <x-app-layout>
-    <x-page-title />
-
     <div class="max-w-2xl px-6 py-16 mx-auto space-y-12">
         <article class="space-y-8 dark:bg-gray-800 dark:text-gray-50">
             <div class="space-y-6">

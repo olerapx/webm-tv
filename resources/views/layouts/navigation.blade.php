@@ -9,7 +9,9 @@
                 </div>
             </div>
 
-{{--            <div class="flex items-center">--}}
+            <x-page-title />
+
+            <div class="flex items-center">
 {{--                @auth--}}
 {{--                    <x-dropdown align="right" width="48">--}}
 {{--                        <x-slot name="trigger">--}}
@@ -39,7 +41,7 @@
 {{--                        <a x-on:click.prevent="showLogin = true" href="" class="underline">Sign In</a>--}}
 {{--                    </div>--}}
 {{--                @endguest--}}
-{{--            </div>--}}
+            </div>
         </div>
     </div>
 

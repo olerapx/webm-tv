@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
-class PageTitle extends \Illuminate\View\Component
+class Meta extends \Illuminate\View\Component
 {
     public \App\Models\Meta $meta;
 
@@ -15,6 +15,6 @@ class PageTitle extends \Illuminate\View\Component
 
     public function render(): \Illuminate\View\View
     {
-        return view('components.page-title');
+        return view('components.meta');
     }
 }
