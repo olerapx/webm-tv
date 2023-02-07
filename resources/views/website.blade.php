@@ -1,7 +1,7 @@
 @php /** @var \App\Contracts\Website $website */ @endphp
 
 <x-app-layout>
-    <div class="container my-8 mx-auto px-4 md:px-12" x-data="{component: new BoardSearch($el)}">
+    <div class="container mt-8 pb-4 mx-auto px-4 md:px-12" x-data="{component: new BoardSearch($el)}">
         <div class="flex justify-end my-8">
             <div class="relative w-full lg:w-1/3 px-4">
                 <input type="search"

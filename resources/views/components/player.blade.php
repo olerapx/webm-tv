@@ -58,7 +58,7 @@
         </video>
     </div>
 
-    <div class="plyr-playlist-wrapper overflow-hidden">
+    <div class="plyr-playlist-wrapper overflow-y-auto grow">
         <ul class="js-plyr-playlist plyr-playlist flex flex-wrap justify-center md:block mr-2 mt-1 md:mt-0">
             <template x-for="(item, index) in component.playlist.items">
                 <li class="playlist-item"

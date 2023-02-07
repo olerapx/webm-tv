@@ -19,7 +19,8 @@ class Player {
 
     async init() {
         this.player = new Plyr(this.container.querySelector('.js-plyr-video'), {
-            keyboard: {focused: false, global: false}
+            keyboard: {focused: false, global: false},
+            volume: .5
         });
 
         this.player.once('ready', async() => {
