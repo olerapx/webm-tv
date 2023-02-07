@@ -11,6 +11,7 @@ class Video extends DataObject implements \App\Contracts\Video
     const HASH = 'hash';
     const TYPE = 'type';
     const SORT_ORDER = 'sort_order';
+    const DURATION_SECONDS = 'duration_seconds';
 
     public function getUrl(): string
     {
@@ -42,6 +43,16 @@ class Video extends DataObject implements \App\Contracts\Video
         return $this->getAttribute(self::TYPE);
     }
 
+    public function getDurationSeconds(): int
+    {
+        return $this->getAttribute(self::DURATION_SECONDS);
+    }
+
+    public function getSortOrder(): int
+    {
+        return $this->getAttribute(self::SORT_ORDER);
+    }
+
     public function jsonSerialize(): mixed
     {
         $result = parent::jsonSerialize();
@@ -52,10 +63,5 @@ class Video extends DataObject implements \App\Contracts\Video
         }
 
         return $result;
-    }
-
-    public function getSortOrder(): int
-    {
-        return $this->getAttribute(self::SORT_ORDER);
     }
 }

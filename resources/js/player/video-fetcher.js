@@ -32,7 +32,8 @@ class VideoFetcher {
                 }],
                 poster: video.thumbnail,
                 hash: video.hash,
-                url_hash: video.url_hash
+                url_hash: video.url_hash,
+                duration: video.duration_seconds * 1000
             };
         });
 

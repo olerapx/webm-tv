@@ -17,5 +17,7 @@ interface Video extends \JsonSerializable
 
     public function getType(): \App\Enums\VideoType;
 
+    public function getDurationSeconds(): int;
+
     public function getSortOrder(): int;
 }

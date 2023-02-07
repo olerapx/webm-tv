@@ -16,6 +16,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "format-duration": "^3.0.2",
         "hotkeys-js": "^3.10.1",
         "plyr": "^3.7.3",
         "tippy.js": "^6.3.7"
