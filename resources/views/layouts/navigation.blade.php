@@ -9,7 +9,7 @@
                 </div>
             </div>
 
-            <x-page-title />
+            <x-breadcrumbs />
 
             <div class="flex items-center">
 {{--                @auth--}}

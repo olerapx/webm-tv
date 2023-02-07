@@ -30,7 +30,7 @@ $meta->for('howto',
             ->push("howto-{$website->value}", url("/howto/{$website->value}"));
     },
     function (\App\Enums\Website $website) use ($defaultTitle) {
-        $content = "How-to &mdash; {$website->value} &mdash; {$defaultTitle}";
+        $content = "How-to &ndash; {$website->value} &ndash; {$defaultTitle}";
         return [
             'title' => $content,
             'desc'  => $content
@@ -45,7 +45,7 @@ $meta->for('website',
             ->push($website->value, url("/{$website->value}"));
     },
     function (\App\Enums\Website $website) use ($defaultTitle) {
-        $content = "{$website->value} &mdash; {$defaultTitle}";
+        $content = "{$website->value} &ndash; {$defaultTitle}";
         return [
             'title' => $content,
             'desc'  => $content
@@ -62,7 +62,7 @@ $meta->for(
             ->push($board, url("/{$website->value}/{$board}"));
     },
     function (\App\Enums\Website $website, string $board) use ($defaultTitle) {
-        $content = "{$board} &mdash; {$website->value} &mdash; {$defaultTitle}";
+        $content = "{$board} &ndash; {$website->value} &ndash; {$defaultTitle}";
         return [
             'title' => $content,
             'desc'  => $content

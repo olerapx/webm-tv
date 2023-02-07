@@ -5,6 +5,8 @@ namespace App\Models;
 
 class Meta
 {
+    private ?array $routeParams = null;
+
     private array $breadcrumbCallbacks = [];
     private array $metaCallbacks = [];
 
@@ -65,10 +67,14 @@ class Meta
 
     private function getCurrentRoute(): array
     {
+        if ($this->routeParams !== null) {
+            return $this->routeParams;
+        }
+
         $route = $this->router->current();
 
         if ($route === null) {
-            return ['errors.404', []];
+            return $this->routeParams = ['errors.404', []];
         }
 
         $name = $route->getName();
@@ -81,6 +87,6 @@ class Meta
             return $route->parameter($parameterName);
         }, $route->parameterNames()));
 
-        return [$name, $params];
+        return $this->routeParams = [$name, $params];
     }
 }
