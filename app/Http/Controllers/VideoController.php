@@ -24,7 +24,10 @@ class VideoController
             throw new \Symfony\Component\HttpKernel\Exception\HttpException(400, __('Unsupported board'));
         }
 
-        $apiRequest = new \App\Models\Video\FetchRequest($request->input());
+        $apiRequest = \Illuminate\Support\Facades\App::make(
+            \App\Models\Video\FetchRequest::class,
+            ['data' => $request->input()]
+        );
         return response()->json($provider->getVideoProvider()->getVideos($apiRequest));
     }
 }
