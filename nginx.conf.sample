@@ -22,6 +22,11 @@ location = /robots.txt  { access_log off; log_not_found off; }
 
 error_page 404 /index.php;
 
+location ~* \.(css|gif|jpg|js|png|ico|otf|sng|xls|doc|exe|jpeg|tgx)$ {
+    access_log off;
+    expires 30d;
+}
+
 location ~ \.php$ {
     fastcgi_split_path_info ^(.+\.php)(/.+)$;
     fastcgi_pass 127.0.0.1:9082;
