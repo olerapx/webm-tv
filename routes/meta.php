@@ -5,9 +5,17 @@ use App\Models\Meta\BreadcrumbGenerator;
 
 $defaultTitle = config('app.name');
 
-$meta->for('index', function (BreadcrumbGenerator $generator) {
-    $generator->push('webm', route('index'));
-});
+$meta->for('index',
+    function (BreadcrumbGenerator $generator) {
+        $generator->push('webm', route('index'));
+    },
+    function () use ($defaultTitle) {
+        return [
+            'title' => $defaultTitle,
+            'desc'  => __('An imageboard video player.')
+        ];
+    }
+);
 
 $meta->for('profile',
     function (BreadcrumbGenerator $generator) {

@@ -6,15 +6,16 @@ namespace App\Models;
 class Meta
 {
     private ?array $routeParams = null;
-
     private array $breadcrumbCallbacks = [];
     private array $metaCallbacks = [];
 
     private \Illuminate\Routing\Router $router;
     private \App\Models\Meta\BreadcrumbGenerator $breadcrumbGenerator;
 
-    public function __construct(\Illuminate\Routing\Router $router, \App\Models\Meta\BreadcrumbGenerator $breadcrumbGenerator)
-    {
+    public function __construct(
+        \Illuminate\Routing\Router $router,
+        \App\Models\Meta\BreadcrumbGenerator $breadcrumbGenerator
+    ) {
         $this->router = $router;
         $this->breadcrumbGenerator = $breadcrumbGenerator;
     }
@@ -83,10 +84,7 @@ class Meta
             throw new \App\Exceptions\UnnamedRouteException($route);
         }
 
-        $params = array_values(array_map(function ($parameterName) use ($route) {
-            return $route->parameter($parameterName);
-        }, $route->parameterNames()));
-
+        $params = array_values(array_map(fn($name) => $route->parameter($name), $route->parameterNames()));
         return $this->routeParams = [$name, $params];
     }
 }

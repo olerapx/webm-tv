@@ -2,6 +2,8 @@
 
 TAG=$1
 
+git checkout -- .
+
 git fetch --tags --force
 git checkout tags/$TAG
 

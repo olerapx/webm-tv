@@ -1,4 +1,5 @@
 {
+    "An imageboard video player.": "Плеер видео с имиджборд",
     "Looks like the board does not contain videos.": "Похоже, что на этой борде нет видео.",
     "Try another one.": "Попробуйте другую.",
     "Search boards...": "Поиск по бордам...",
@@ -20,5 +21,16 @@
     "Press ENTER.": "Нажмите ENTER.",
     "Copy the value corresponding to": "Скопируйте значение, соответствующее",
     "Example value: ": "Пример: ",
-    "That's it! Now you have the access code.": "Все! Теперь у вас есть код доступа."
+    "That's it! Now you have the access code.": "Все! Теперь у вас есть код доступа.",
+    "I've entered the code, but there is black screen instead of videos. What do I do?": "Я ввел код, но вместо видео отображается черный экран. Что делать?",
+    "Make sure you enter the code on the same device you received in on.": "Убедитесь, что вы вводите код на том же устройстве, на котором разместили пост и получили его.",
+    "To watch videos, you have to have the": "Для просмотра видео у вас должна стоять кука",
+    "set on 2ch.hk itself.": "на самом 2ch.hk.",
+    "If that did not help, your browser probably rejects using the cookie on 2ch.hk.": "Если это не помогло, ваш браузер отклоняет использование куки на 2ch.hk.",
+    "On Firefox, you should just disable the Tracking Protection for :title.": "На Firefox достаточно выключить защиту от отлеживания на :title.",
+    "Learn how.": "Узнать, как.",
+    "On Chromium-based browsers (Google Chrome, Edge):": "В браузерах Chromium (Google Chrome, Edge):",
+    "Press F12 to open Developer Tools.": "Нажмите F12, чтобы открыть инструменты разработчика.",
+    "Go Application - Cookies, find the cookie and select \"Secure\".": "Перейдите в Приложение - Куки, найдите куку и поставьте галочку в колонке \"Secure\".",
+    "On Chrome Android, you may complete the previous steps using": "На Chrome для Android, вы можете выполнить предыдущие шаги с помощью"
 }
