@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 
+use App\Services\Video\HashChecker;
 use GuzzleHttp\Promise\PromiseInterface;
 
 readonly class Collector
@@ -28,8 +29,8 @@ readonly class Collector
         }
 
         $hashChecker = \Illuminate\Support\Facades\App::make(
-            \App\Services\Video\HashChecker::class,
-            ['playlistHashes' => $request->getPlaylistHashes()]
+            HashChecker::class,
+            ['playlistHashes' => $request->getPlaylistHashes(), 'website' => $request->getWebsite()]
         );
 
         $threadIds = array_slice($threadIds, 0, self::MAX_TOTAL_REQUESTS);
@@ -49,46 +50,17 @@ readonly class Collector
     private function getVideosChunk(
         \App\Contracts\Video\FetchRequest $request,
         array $chunk,
-        \App\Services\Video\HashChecker $hashChecker
+        HashChecker $hashChecker
     ): array {
         $result = [];
 
         $promises = $this->getRequestBatch($request, $chunk);
-        $promisesLeft = count($promises);
+        $left = count($promises);
 
         \GuzzleHttp\Promise\Each::of(
             $promises,
-            function ($value, $i, PromiseInterface $aggregate) use (&$result, $request, &$promisesLeft, $hashChecker) {
-                if (\GuzzleHttp\Promise\Is::settled($aggregate)) {
-                    return;
-                }
-
-                foreach (Extractor::extract($value) as $video) {
-                    if ($hashChecker->checkUnique($video)) {
-                        $result[] = $video;
-                    }
-
-                    if (count($result) == $request->getCount()) {
-                        $aggregate->resolve($result);
-                        return;
-                    }
-                }
-
-                $promisesLeft --;
-                if (!$promisesLeft) {
-                    $aggregate->resolve($result);
-                }
-            },
-            function ($value, $key, PromiseInterface $aggregate) {
-                if (!$value instanceof \GuzzleHttp\Exception\ServerException) {
-                    return;
-                }
-
-                if ($value->getCode() === 500 && str_contains($value->getMessage(), 'Not found')) {
-                    $aggregate->resolve([]);
-                    throw new \App\Exceptions\PrivateBoardException();
-                }
-            },
+            $this->onSuccess($result, (int) $request->getCount(), $left, $hashChecker),
+            $this->onError()
         )->wait();
 
         return $result;
@@ -104,5 +76,44 @@ readonly class Collector
                 self::COOKIE => $request->getAccessCode()
             ]);
         }, $threadIds);
+    }
+
+    private function onSuccess(array &$result, int $count, int &$left, HashChecker $hashChecker): \Closure
+    {
+        return function ($value, $i, PromiseInterface $promise) use (&$result, $count, &$left, $hashChecker) {
+            if (\GuzzleHttp\Promise\Is::settled($promise)) {
+                return;
+            }
+
+            foreach (Extractor::extract($value) as $video) {
+                if ($hashChecker->checkUnique($video)) {
+                    $result[] = $video;
+                }
+
+                if (count($result) == $count) {
+                    $promise->resolve($result);
+                    return;
+                }
+            }
+
+            $left--;
+            if (!$left) {
+                $promise->resolve($result);
+            }
+        };
+    }
+
+    private function onError(): \Closure
+    {
+        return function ($value, $key, PromiseInterface $promise) {
+            if (!$value instanceof \GuzzleHttp\Exception\ServerException) {
+                return;
+            }
+
+            if ($value->getCode() === 500 && str_contains($value->getMessage(), 'Not found')) {
+                $promise->resolve([]);
+                throw new \App\Exceptions\PrivateBoardException();
+            }
+        };
     }
 }

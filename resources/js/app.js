@@ -17,6 +17,8 @@ import tippy from 'tippy.js'
 window.tippy = tippy
 import 'tippy.js/dist/tippy.css'
 
+import './user'
+
 import './board-search'
 
 import '../css/vars.css'
@@ -29,6 +31,7 @@ import './player/playlist'
 import './player/playlist-item'
 import './player/video-fetcher'
 import './player/hotkey-tooltip'
+import './player/watch-history'
 import '../css/player.css'
 import './clipboard'
 import './tooltip'
