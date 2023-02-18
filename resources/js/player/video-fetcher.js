@@ -15,7 +15,7 @@ class VideoFetcher {
             hashes: hashes,
             access_code: AccessCode.get(website)
         }).catch(function (e) {
-            if (e && e.response && e.response.data && e.response.data.code === PlayerErrors.CLOSED_BOARD()) {
+            if (e && e.response && e.response.data && e.response.data.code === PlayerErrors.closedBoard) {
                 throw e.response.data.code;
             }
 

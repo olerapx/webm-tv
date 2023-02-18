@@ -1,10 +1,8 @@
 class AccessCode {
+    static storageKey = 'access-codes'
+
     constructor(form) {
         this.form = form;
-    }
-
-    static STORAGE_KEY() {
-        return 'access-codes';
     }
 
     submit() {
@@ -21,7 +19,7 @@ class AccessCode {
         let codes = AccessCode._readAll();
         codes[website] = code;
 
-        localStorage.setItem(AccessCode.STORAGE_KEY(), JSON.stringify(codes));
+        localStorage.setItem(AccessCode.storageKey, JSON.stringify(codes));
     }
 
     static get(website) {
@@ -34,7 +32,7 @@ class AccessCode {
     }
 
     static _readAll() {
-        let value = localStorage.getItem(AccessCode.STORAGE_KEY());
+        let value = localStorage.getItem(AccessCode.storageKey);
         if (!value) {
             return {};
         }
