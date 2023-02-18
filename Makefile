@@ -10,6 +10,7 @@ up:
 	docker compose up -d --remove-orphans
 	$(APP_RUN) composer install \
 	   && $(APP_RUN) php8.3 artisan migrate --force \
+	   && $(APP_RUN) php8.3 artisan scout:sync \
 	   && $(APP_RUN) npm install \
 	   && $(APP_RUN) npm run build  \
 	   && $(APP_RUN) php8.3 artisan view:cache \

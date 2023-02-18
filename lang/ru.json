@@ -32,5 +32,12 @@
     "On Chromium-based browsers (Google Chrome, Edge):": "В браузерах Chromium (Google Chrome, Edge):",
     "Press F12 to open Developer Tools.": "Нажмите F12, чтобы открыть инструменты разработчика.",
     "Go Application - Cookies, find the cookie and select \"Secure\".": "Перейдите в Приложение - Куки, найдите куку и поставьте галочку в колонке \"Secure\".",
-    "On Chrome Android, you may complete the previous steps using": "На Chrome для Android, вы можете выполнить предыдущие шаги с помощью"
+    "On Chrome Android, you may complete the previous steps using": "На Chrome для Android, вы можете выполнить предыдущие шаги с помощью",
+    "Sign In": "Войти",
+    "Log Out": "Выйти",
+    "Sign in or create an account": "Войдите или создайте аккаунт",
+    "Username": "Юзернейм",
+    "Password": "Пароль",
+    "to access watch history & bookmark videos": "для доступа к истории и закладкам",
+    "Profile": "Профиль"
 }

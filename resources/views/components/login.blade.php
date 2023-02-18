@@ -5,7 +5,7 @@
     @csrf
 
     <div>
-        <div class="mb-5 text-lg">Sign in or create an account</div>
+        <div class="mb-5 text-lg">{{ __('Sign in or create an account') }}</div>
 
         <x-input-label for="name" :value="__('Username')" />
         <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" required />
@@ -22,6 +22,6 @@
         <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required />
     </div>
 
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-5">Sign In</button>
-    <span class="text-sm pl-3">to access watch history & bookmark videos</span>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-5">{{ __('Sign In') }}</button>
+    <span class="text-sm pl-3">{{ __('to access watch history & bookmark videos') }}</span>
 </form>
