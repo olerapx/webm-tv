@@ -21,7 +21,7 @@ $meta->for('profile',
     function (BreadcrumbGenerator $generator) {
         $generator
             ->push('webm', route('index'))
-            ->push('me', route('me'));
+            ->push('profile', route('profile'));
     },
     function () {
         return [
