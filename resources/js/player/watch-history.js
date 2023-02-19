@@ -1,16 +1,13 @@
 class WatchHistory {
-    sendQueue = 5
+    sendQueueSize = 5
 
+    async push(video) {
+        console.log(video);
 
-    // title
-    // url
-    // mime
-    // hash
-    // url_hash
-    // duration
-
-    // TODO: store and then asynchronously send, without awaiting
-    // TODO: detect already sent and do not send twice
+        // TODO: store and then asynchronously send, without awaiting
+        // TODO: detect already sent and do not send twice
+        // TODO: send any leftover videos onbeforeunload
+    }
 }
 
 window.WatchHistory = WatchHistory;

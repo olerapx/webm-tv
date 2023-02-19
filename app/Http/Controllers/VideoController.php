@@ -30,4 +30,15 @@ class VideoController
         );
         return response()->json($provider->getVideoProvider()->getVideos($apiRequest));
     }
+
+    public function addToHistory()
+    {
+        // TODO:
+        // validate authorized via middleware
+        // accept multiple videos but no more than 10(?)
+
+        $video =
+            \App\Models\WatchHistory\Video::from(new \App\Models\Video(), \Illuminate\Support\Facades\Auth::user());
+        $video->save();
+    }
 }

@@ -96,7 +96,9 @@ class Player {
 
         this.player.source = playlistItem.video;
         this.player.play().catch(() => {
-        })
+        });
+
+        this.watchHistory.push(playlistItem.video.original);
     }
 
     async _loadMore(index) {
