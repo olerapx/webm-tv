@@ -9,6 +9,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(\App\Http\Controllers\VideoController::class)->group(function () {
     Route::post('/video/fetch', 'fetch');
+    Route::middleware('auth:sanctum')->post('/video/add-to-history', 'addToHistory');
 });
 
 Route::controller(\App\Http\Controllers\Auth\UserController::class)->group(function () {

@@ -31,14 +31,18 @@ class VideoController
         return response()->json($provider->getVideoProvider()->getVideos($apiRequest));
     }
 
-    public function addToHistory()
+    public function addToHistory(\App\Http\Requests\Video\AddToHistoryRequest $request): \Illuminate\Http\JsonResponse
     {
-        // TODO:
-        // validate authorized via middleware
-        // accept multiple videos but no more than 10(?)
+        \Illuminate\Support\Facades\Log::channel('video_history')
+            ->info('Add to History', ['request' => $request->input()]);
 
-        $video =
-            \App\Models\WatchHistory\Video::from(new \App\Models\Video(), \Illuminate\Support\Facades\Auth::user());
-        $video->save();
+        // TODO:
+        // accept multiple videos but no more than 10(?)
+//
+//        $video =
+//            \App\Models\WatchHistory\Video::from(new \App\Models\Video(), \Illuminate\Support\Facades\Auth::user());
+//        $video->save();
+
+        return response()->json();
     }
 }

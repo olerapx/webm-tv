@@ -8,6 +8,7 @@ git fetch --tags --force
 git checkout tags/$TAG
 
 php8.2 artisan migrate --force
+php8.2 artisan scout:sync
 
 npm install
 npm run build

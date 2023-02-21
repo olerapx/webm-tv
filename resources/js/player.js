@@ -12,8 +12,8 @@ class Player {
 
         this.state = new PlayerState();
         this.playlist = new Playlist();
-        this.videoFetcher = new VideoFetcher();
-        this.watchHistory = new WatchHistory();
+        this.videoFetcher = new VideoFetcher(this.website, this.board);
+        this.watchHistory = new WatchHistory(this.website, this.board);
     }
 
     async init() {
@@ -50,7 +50,7 @@ class Player {
         this.state.setLoading(true);
 
         try {
-            const playlist = await this.videoFetcher.fetch(this.website, this.board, count, this.playlist.hashes());
+            const playlist = await this.videoFetcher.fetch(count, this.playlist.hashes());
             this.playlist.add(playlist);
         } catch (e) {
             console.error(e);

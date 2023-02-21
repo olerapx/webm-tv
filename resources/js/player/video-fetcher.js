@@ -1,19 +1,22 @@
 class VideoFetcher {
-    constructor() {
+    constructor(website, board) {
+        this.website = website;
+        this.board = board;
+
         this.noMoreVideos = false;
     }
 
-    async fetch(website, board, count, hashes) {
+    async fetch(count, hashes) {
         if (this.noMoreVideos) {
             return [];
         }
 
         const videos = await axios.post('/api/video/fetch', {
-            website: website,
-            board: board,
+            website: this.website,
+            board: this.board,
             count: count,
             hashes: hashes,
-            access_code: AccessCode.get(website)
+            access_code: AccessCode.get(this.website)
         }).catch(function (e) {
             if (e && e.response && e.response.data && e.response.data.code === PlayerErrors.closedBoard) {
                 throw e.response.data.code;
