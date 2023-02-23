@@ -13,6 +13,15 @@ class Video extends DataObject implements \App\Contracts\Video
     const SORT_ORDER = 'sort_order';
     const DURATION_SECONDS = 'duration_seconds';
 
+    public function __construct(array $data = [])
+    {
+        parent::__construct($data);
+
+        if (!$this->getAttribute(self::TYPE) instanceof \App\Enums\VideoType) {
+            $this->setAttribute(self::TYPE, \App\Enums\VideoType::from($this->getAttribute(self::TYPE)));
+        }
+    }
+
     public function getUrl(): string
     {
         return $this->getAttribute(self::URL);

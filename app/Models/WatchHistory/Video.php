@@ -9,22 +9,7 @@ class Video extends \Illuminate\Database\Eloquent\Model
 
     protected $keyType = 'string';
 
-    public static function from(\App\Models\Video $video, \Illuminate\Contracts\Auth\Authenticatable $user): self
-    {
-        $data = $video->jsonSerialize();
-
-        $video = new \App\Models\WatchHistory\Video();
-
-        $video->fill([
-            'id'   => \Symfony\Component\Uid\Ulid::generate(),
-            'url'  => 'aa',
-            'user' => $user->name
-        ]);
-
-        // TODO: convert all fields
-
-        return $video;
-    }
+    protected $guarded = [];
 
     public function searchableAs(): string
     {

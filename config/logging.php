@@ -70,6 +70,13 @@ return [
             'days' => 14,
         ],
 
+        'video_fetch' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/video_fetch.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+        ],
+
         'video_history' => [
             'driver' => 'daily',
             'path' => storage_path('logs/video_history.log'),
