@@ -44,6 +44,10 @@ class PlayerHotkeys {
             }
         }
 
+        hotkeys.filter = () => {
+            return true;
+        };
+
         for (const [key, callback] of Object.entries(actions)) {
             hotkeys(key, (event) => {
                 event.preventDefault();
