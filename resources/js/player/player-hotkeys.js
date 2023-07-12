@@ -44,8 +44,12 @@ class PlayerHotkeys {
             }
         }
 
-        hotkeys.filter = () => {
-            return true;
+        hotkeys.filter = (event) => {
+            if (event.target.closest('.plyr')) {
+                return true;
+            }
+
+            return !event.target.isContentEditable && !['INPUT', 'SELECT', 'TEXTAREA'].includes(event.target.tagName);
         };
 
         for (const [key, callback] of Object.entries(actions)) {
