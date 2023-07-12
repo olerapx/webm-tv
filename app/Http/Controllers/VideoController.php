@@ -31,7 +31,12 @@ class VideoController
         Log::channel('video_history')->info('Add to History', ['request' => $request->input()]);
 
         $user = \Illuminate\Support\Facades\Auth::user();
-        $this->watchHistory->add($request->input('video_objects'), $user);
+        $this->watchHistory->add(
+            $request->input('video_objects'),
+            $request->input('website'),
+            $request->input('board'),
+            $user
+        );
 
         return response()->json();
     }
