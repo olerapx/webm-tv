@@ -7,6 +7,8 @@ git checkout -- .
 git fetch --tags --force
 git checkout tags/$TAG
 
+composer install
+
 php8.2 artisan migrate --force
 
 npm install

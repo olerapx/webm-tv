@@ -9,8 +9,6 @@ for NUM in $RULES_DESC; do
   yes | ufw delete $NUM
 done
 
-IPS=()
-
 for HOST in $HOSTS; do
     HOST_IPS=$(dig +short "$HOST")
     HOST_IPS=($(echo "$HOST_IPS" | tr ' ' '\n'))
