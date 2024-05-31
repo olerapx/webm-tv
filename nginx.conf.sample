@@ -1,4 +1,4 @@
-root $WEBM_ROOT/public;
+root /var/www/html/public;
 index index.php;
 
 add_header X-Frame-Options "SAMEORIGIN";
@@ -13,6 +13,17 @@ gzip_proxied any;
 gzip_comp_level 6;
 gzip_types text/plain text/css text/xml application/json application/javascript application/xml+rss application/atom+xml image/svg+xml;
 
+location ~ \.php$ {
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass app:9000;
+
+    fastcgi_param SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+    fastcgi_param SCRIPT_NAME       $fastcgi_script_name;
+    fastcgi_index index.php;
+
+    include fastcgi_params;
+}
+
 location / {
     try_files $uri $uri/ /index.php?$query_string;
 }
@@ -25,17 +36,6 @@ error_page 404 /index.php;
 location ~* \.(css|gif|jpg|js|png|ico|otf|sng|xls|doc|exe|jpeg|tgx)$ {
     access_log off;
     expires 30d;
-}
-
-location ~ \.php$ {
-    fastcgi_split_path_info ^(.+\.php)(/.+)$;
-    fastcgi_pass 127.0.0.1:9082;
-
-    fastcgi_param SCRIPT_FILENAME   $document_root$fastcgi_script_name;
-    fastcgi_param SCRIPT_NAME       $fastcgi_script_name;
-    fastcgi_index index.php;
-
-    include fastcgi_params;
 }
 
 location ~ /\.(?!well-known).* {
