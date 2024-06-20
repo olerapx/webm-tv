@@ -30,6 +30,7 @@ class FetchRequest extends \App\Models\DataObject implements \App\Contracts\Vide
     {
         return $this->setAttribute(self::COUNT, $value);
     }
+
     public function getPlaylistHashes(): array
     {
         return $this->getAttribute(self::HASHES) ?? [];
