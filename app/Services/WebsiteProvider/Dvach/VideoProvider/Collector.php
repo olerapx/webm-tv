@@ -7,7 +7,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 
 class Collector
 {
-    const MAX_TOTAL_REQUESTS = 20;
+    const MAX_TOTAL_REQUESTS = 100;
     const PARALLEL = 5;
 
     const COOKIE = 'usercode_auth';
