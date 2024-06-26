@@ -1,3 +1,4 @@
+FROM spiralscout/roadrunner:2024.1 as roadrunner
 FROM ubuntu:22.04
 
 ARG NODE_VERSION=20
@@ -6,6 +7,9 @@ WORKDIR /var/www/html
 
 ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN groupadd --force -g 1000 www &&  \
+    useradd -u 1000 -ms /bin/bash -g www www
 
 RUN apt update \
     && mkdir -p /etc/apt/keyrings \
@@ -35,13 +39,13 @@ RUN apt update \
     && apt install -y mysql-client \
     && apt -y autoremove \
     && apt clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /tmp/* /var/tmp/*
 
-RUN groupadd --force -g 1000 www
-RUN useradd -u 1000 -ms /bin/bash -g www www
+COPY --from=roadrunner /usr/bin/rr /usr/bin/rr
+COPY php.ini /etc/php/8.3/cli/conf.d/99-php.ini
 
-COPY www.conf /etc/php/8.3/fpm/pool.d/www.conf
-COPY xdebug.ini /etc/php/8.3/fpm/conf.d/99-xdebug.ini
+EXPOSE ${OCTANE_PORT:-8000}
+EXPOSE 6001
 
-EXPOSE 9000
-CMD ["php-fpm8.3", "-F"]
+USER www
+CMD ["php8.3", "artisan", "octane:start"]

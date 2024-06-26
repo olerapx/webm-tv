@@ -5,11 +5,9 @@ namespace App\View\Components;
 
 class WebsiteGrid extends \Illuminate\View\Component
 {
-    public \App\Services\WebsiteProvider $websiteProvider;
-
-    public function __construct(\App\Services\WebsiteProvider $websiteProvider)
+    public function __construct(public readonly \App\Services\WebsiteProvider $websiteProvider)
     {
-        $this->websiteProvider = $websiteProvider;
+
     }
 
     public function render()

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services\Video;
 
-class Sorter
+readonly class Sorter
 {
     public static function sort(array $videos): array
     {

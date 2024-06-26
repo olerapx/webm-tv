@@ -7,11 +7,9 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    private \App\Contracts\WebsiteProvider $websiteProvider;
-
-    public function __construct(\App\Contracts\WebsiteProvider $websiteProvider)
+    public function __construct(private readonly \App\Contracts\WebsiteProvider $websiteProvider)
     {
-        $this->websiteProvider = $websiteProvider;
+
     }
 
     public function index(Request $request): \Illuminate\View\View

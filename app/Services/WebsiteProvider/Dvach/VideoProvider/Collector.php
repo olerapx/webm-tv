@@ -5,22 +5,17 @@ namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 
 use GuzzleHttp\Promise\PromiseInterface;
 
-class Collector
+readonly class Collector
 {
-    const MAX_TOTAL_REQUESTS = 20;
-    const PARALLEL = 5;
+    private const MAX_TOTAL_REQUESTS = 20;
+    private const PARALLEL = 5;
 
-    const COOKIE = 'usercode_auth';
-
-    private \App\Services\Http $http;
-    private \App\Services\Video\HashChecker $hashChecker;
+    private const COOKIE = 'usercode_auth';
 
     public function __construct(
-        \App\Services\Http $http,
-        \App\Services\Video\HashChecker $hashChecker
+        private \App\Services\Http $http
     ) {
-        $this->http = $http;
-        $this->hashChecker = $hashChecker;
+
     }
 
     /**
@@ -32,13 +27,16 @@ class Collector
             return [];
         }
 
-        $this->hashChecker->setPlaylist($request->getPlaylistHashes());
-        $threadIds = array_slice($threadIds, 0, self::MAX_TOTAL_REQUESTS);
+        $hashChecker = \Illuminate\Support\Facades\App::make(
+            \App\Services\Video\HashChecker::class,
+            ['playlistHashes' => $request->getPlaylistHashes()]
+        );
 
+        $threadIds = array_slice($threadIds, 0, self::MAX_TOTAL_REQUESTS);
         $result = [];
 
         foreach (array_chunk($threadIds, self::PARALLEL) as $chunk) {
-            $result += $this->getVideosChunk($request, $chunk);
+            $result += $this->getVideosChunk($request, $chunk, $hashChecker);
 
             if (count($result) == $request->getCount()) {
                 return \App\Services\Video\Sorter::sort($result);
@@ -48,8 +46,11 @@ class Collector
         return \App\Services\Video\Sorter::sort($result);
     }
 
-    private function getVideosChunk(\App\Contracts\Video\FetchRequest $request, array $chunk): array
-    {
+    private function getVideosChunk(
+        \App\Contracts\Video\FetchRequest $request,
+        array $chunk,
+        \App\Services\Video\HashChecker $hashChecker
+    ): array {
         $result = [];
 
         $promises = $this->getRequestBatch($request, $chunk);
@@ -57,13 +58,13 @@ class Collector
 
         \GuzzleHttp\Promise\Each::of(
             $promises,
-            function ($value, $i, PromiseInterface $aggregate) use (&$result, $request, &$promisesLeft) {
+            function ($value, $i, PromiseInterface $aggregate) use (&$result, $request, &$promisesLeft, $hashChecker) {
                 if (\GuzzleHttp\Promise\Is::settled($aggregate)) {
                     return;
                 }
 
                 foreach (Extractor::extract($value) as $video) {
-                    if ($this->hashChecker->checkUnique($video)) {
+                    if ($hashChecker->checkUnique($video)) {
                         $result[] = $video;
                     }
 

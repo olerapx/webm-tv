@@ -8,11 +8,9 @@ class HashChecker
     private array $hashed = [];
     private array $plain = [];
 
-    private array $playlistHashes = [];
-
-    public function setPlaylist(array $hashes): void
+    public function __construct(private readonly array $playlistHashes)
     {
-        $this->playlistHashes = array_flip($hashes);
+
     }
 
     public function checkUnique(\App\Contracts\Video $video): bool

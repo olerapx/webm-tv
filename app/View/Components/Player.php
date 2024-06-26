@@ -5,15 +5,11 @@ namespace App\View\Components;
 
 class Player extends \Illuminate\View\Component
 {
-    public \App\Contracts\Website $website;
-    public string $board;
-
     public function __construct(
-        \App\Contracts\Website $website,
-        string $board
+        public readonly \App\Contracts\Website $website,
+        public readonly string $board
     ) {
-        $this->website = $website;
-        $this->board = $board;
+
     }
 
     public function render(): \Illuminate\View\View

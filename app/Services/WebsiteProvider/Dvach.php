@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace App\Services\WebsiteProvider;
 
-class Dvach implements \App\Contracts\Website
+readonly class Dvach implements \App\Contracts\Website
 {
-
     public function getCode(): \App\Enums\Website
     {
         return \App\Enums\Website::Dvach;

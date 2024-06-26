@@ -5,11 +5,9 @@ namespace App\View\Components;
 
 class WebsiteCard extends \Illuminate\View\Component
 {
-    public \App\Contracts\Website $website;
-
-    public function __construct(\App\Contracts\Website $website)
+    public function __construct(public readonly \App\Contracts\Website $website)
     {
-        $this->website = $website;
+
     }
 
     public function render(): \Illuminate\View\View
