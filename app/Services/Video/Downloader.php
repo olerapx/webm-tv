@@ -3,15 +3,13 @@ declare(strict_types=1);
 
 namespace App\Services\Video;
 
-class Downloader implements \App\Contracts\Downloader
+readonly class Downloader implements \App\Contracts\Downloader
 {
-    const MAX_SIZE = 50 * 1024 * 1024;
+    private const MAX_SIZE = 50 * 1024 * 1024;
 
-    private \App\Contracts\WebsiteProvider $websiteProvider;
-
-    public function __construct(\App\Contracts\WebsiteProvider $websiteProvider)
+    public function __construct(private \App\Contracts\WebsiteProvider $websiteProvider)
     {
-        $this->websiteProvider = $websiteProvider;
+
     }
 
     public function download(string $file)

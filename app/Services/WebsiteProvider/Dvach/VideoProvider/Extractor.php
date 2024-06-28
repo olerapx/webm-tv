@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 
-class Extractor
+readonly class Extractor
 {
     private const API_WEBM = 6;
     private const API_MP4 = 10;

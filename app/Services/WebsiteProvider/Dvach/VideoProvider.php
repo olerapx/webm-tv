@@ -6,24 +6,17 @@ namespace App\Services\WebsiteProvider\Dvach;
 use App\Services\Http;
 use App\Services\WebsiteProvider\Dvach\VideoProvider\Url;
 
-class VideoProvider implements \App\Contracts\Website\VideoProvider
+readonly class VideoProvider implements \App\Contracts\Website\VideoProvider
 {
-    const ID = 'dvach';
-
-    const MAX_VIDEOS = 20;
-
-    private Http $http;
-    private \App\Services\Cache $cache;
-    private VideoProvider\Collector $collector;
+    private const ID = 'dvach';
+    private const MAX_VIDEOS = 20;
 
     public function __construct(
-         Http $http,
-        \App\Services\Cache $cache,
-        \App\Services\WebsiteProvider\Dvach\VideoProvider\Collector $collector
+        private Http $http,
+        private \App\Services\Cache $cache,
+        private \App\Services\WebsiteProvider\Dvach\VideoProvider\Collector $collector
     ) {
-        $this->http = $http;
-        $this->cache = $cache;
-        $this->collector = $collector;
+
     }
 
     public function getBoards(): array
@@ -42,10 +35,11 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
 
         return $result;
     }
+
     private function doGetBoards(): array
     {
         try {
-            $json = $this->http->json(Url::url('api/mobile/v2/boards'))->wait(true);
+            $json = $this->http->json(Url::url('api/mobile/v2/boards'))->wait();
 
             $result = [];
             foreach ($json as $row) {
@@ -61,15 +55,17 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
         return $result;
     }
 
-    public function getVideos(\App\Contracts\Video\FetchRequest $request): array
+    public function getVideos(\App\Contracts\Video\FetchRequest $fetchRequest): array
     {
-        if ($request->getCount() === null || $request->getCount() < 1 || $request->getCount() > self::MAX_VIDEOS) {
-            $request->setCount(self::MAX_VIDEOS);
+        if ($fetchRequest->getCount() === null
+            || $fetchRequest->getCount() < 1
+            || $fetchRequest->getCount() > self::MAX_VIDEOS) {
+            $fetchRequest->setCount(self::MAX_VIDEOS);
         }
 
         try {
-            $ids = $this->getThreadIds($request->getBoard());
-            return $this->collector->collect($request, $ids);
+            $ids = $this->getThreadIds($fetchRequest->getBoard());
+            return $this->collector->collect($fetchRequest, $ids);
         } catch (\App\Exceptions\PrivateBoardException $e) {
             throw $e;
         } catch (\Throwable $e) {
@@ -80,7 +76,7 @@ class VideoProvider implements \App\Contracts\Website\VideoProvider
 
     private function getThreadIds(string $board): array
     {
-        $threads = $this->http->json(Url::url("$board/catalog.json"))->wait(true)['threads'] ?? [];
+        $threads = $this->http->json(Url::url("$board/catalog.json"))->wait()['threads'] ?? [];
 
         $result = [];
         foreach ($threads as $thread) {

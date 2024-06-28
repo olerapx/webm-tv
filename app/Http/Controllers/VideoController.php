@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-class VideoController
+class VideoController extends Controller
 {
-    private \App\Contracts\WebsiteProvider $websiteProvider;
-
     public function __construct(
-        \App\Contracts\WebsiteProvider $websiteProvider
+        private readonly \App\Contracts\WebsiteProvider $websiteProvider
     ) {
-        $this->websiteProvider = $websiteProvider;
+
     }
 
     public function fetch(\App\Http\Requests\Video\FetchRequest $request): \Illuminate\Http\JsonResponse

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 
-class Url
+readonly class Url
 {
     const BASE_URL = 'https://2ch.hk';
 

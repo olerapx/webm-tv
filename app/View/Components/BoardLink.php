@@ -5,15 +5,12 @@ namespace App\View\Components;
 
 class BoardLink extends \Illuminate\View\Component
 {
-    public \App\Contracts\Website $website;
-    public string $code;
-    public string $title;
+    public function __construct(
+        public readonly \App\Contracts\Website $website,
+        public readonly string $code,
+        public readonly string $title
+    ) {
 
-    public function __construct(\App\Contracts\Website $website, string $code, string $title)
-    {
-        $this->website = $website;
-        $this->code = $code;
-        $this->title = $title;
     }
 
     public function render()

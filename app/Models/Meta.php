@@ -5,19 +5,14 @@ namespace App\Models;
 
 class Meta
 {
-    private ?array $routeParams = null;
     private array $breadcrumbCallbacks = [];
     private array $metaCallbacks = [];
 
-    private \Illuminate\Routing\Router $router;
-    private \App\Models\Meta\BreadcrumbGenerator $breadcrumbGenerator;
-
     public function __construct(
-        \Illuminate\Routing\Router $router,
-        \App\Models\Meta\BreadcrumbGenerator $breadcrumbGenerator
+        private readonly \Illuminate\Routing\Router $router,
+        private readonly \App\Models\Meta\BreadcrumbGenerator $breadcrumbGenerator
     ) {
-        $this->router = $router;
-        $this->breadcrumbGenerator = $breadcrumbGenerator;
+
     }
 
     public function for(string $name, ?callable $breadcrumbFn = null, ?callable $metaFn = null): void
@@ -41,17 +36,20 @@ class Meta
         }
     }
 
-    public function title(): string
+    /**
+     * @return array{title: string, desc:string}
+     */
+    public function metadata(): array
     {
-        return $this->generateMeta()['title'] ?? config('app.name');
+        $meta = $this->doGetMetadata();
+
+        return [
+            'title' => $meta['title'] ?? config('app.name'),
+            'desc'  => $meta['desc'] ?? config('app.name')
+        ];
     }
 
-    public function description(): string
-    {
-        return $this->generateMeta()['desc'] ?? config('app.name');
-    }
-
-    private function generateMeta(): array
+    private function doGetMetadata(): array
     {
         try {
             [$name, $params] = $this->getCurrentRoute();
@@ -68,14 +66,10 @@ class Meta
 
     private function getCurrentRoute(): array
     {
-        if ($this->routeParams !== null) {
-            return $this->routeParams;
-        }
-
         $route = $this->router->current();
 
         if ($route === null) {
-            return $this->routeParams = ['errors.404', []];
+            return ['errors.404', []];
         }
 
         $name = $route->getName();
@@ -84,7 +78,7 @@ class Meta
             throw new \App\Exceptions\UnnamedRouteException($route);
         }
 
-        $params = array_values(array_map(fn($name) => $route->parameter($name), $route->parameterNames()));
-        return $this->routeParams = [$name, $params];
+        $params = array_values(array_map(fn ($name) => $route->parameter($name), $route->parameterNames()));
+        return [$name, $params];
     }
 }
