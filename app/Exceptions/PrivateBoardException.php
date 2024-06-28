@@ -5,7 +5,7 @@ namespace App\Exceptions;
 
 class PrivateBoardException extends \Exception implements \Illuminate\Contracts\Support\Responsable
 {
-    const CLOSED_BOARD = 'closed_board';
+    private const string CLOSED_BOARD = 'closed_board';
 
     public function toResponse($request)
     {

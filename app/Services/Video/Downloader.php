@@ -5,7 +5,7 @@ namespace App\Services\Video;
 
 readonly class Downloader implements \App\Contracts\Downloader
 {
-    private const MAX_SIZE = 50 * 1024 * 1024;
+    private const int MAX_SIZE = 50 * 1024 * 1024;
 
     public function __construct(private \App\Contracts\WebsiteProvider $websiteProvider)
     {

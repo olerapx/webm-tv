@@ -8,8 +8,8 @@ use App\Services\WebsiteProvider\Dvach\VideoProvider\Url;
 
 readonly class VideoProvider implements \App\Contracts\Website\VideoProvider
 {
-    private const ID = 'dvach';
-    private const MAX_VIDEOS = 20;
+    private const string ID = \App\Enums\Website::Dvach->value;
+    private const int MAX_VIDEOS = 20;
 
     public function __construct(
         private Http $http,

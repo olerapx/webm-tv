@@ -5,8 +5,8 @@ namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 
 readonly class Extractor
 {
-    private const API_WEBM = 6;
-    private const API_MP4 = 10;
+    private const int API_WEBM = 6;
+    private const int API_MP4 = 10;
 
     public static function extract(array $response): \Generator
     {

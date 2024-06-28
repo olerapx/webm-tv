@@ -5,7 +5,7 @@ namespace App\Services;
 
 class Cache
 {
-    private const CACHE_LIMIT = 2;
+    private const int CACHE_LIMIT = 2;
 
     private array $cache = [];
 
