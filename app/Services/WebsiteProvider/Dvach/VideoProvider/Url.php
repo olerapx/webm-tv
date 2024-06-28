@@ -5,7 +5,7 @@ namespace App\Services\WebsiteProvider\Dvach\VideoProvider;
 
 readonly class Url
 {
-    const BASE_URL = 'https://2ch.hk';
+    private const string BASE_URL = 'https://2ch.hk';
 
     public static function url(string $endpoint): string
     {

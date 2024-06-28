@@ -5,13 +5,13 @@ namespace App\Models;
 
 class Video extends DataObject implements \App\Contracts\Video
 {
-    const URL = 'url';
-    const NAME = 'name';
-    const THUMBNAIL = 'thumbnail';
-    const HASH = 'hash';
-    const TYPE = 'type';
-    const SORT_ORDER = 'sort_order';
-    const DURATION_SECONDS = 'duration_seconds';
+    public const string URL = 'url';
+    public const string NAME = 'name';
+    public const string THUMBNAIL = 'thumbnail';
+    public const string HASH = 'hash';
+    public const string TYPE = 'type';
+    public const string SORT_ORDER = 'sort_order';
+    public const string DURATION_SECONDS = 'duration_seconds';
 
     public function getUrl(): string
     {

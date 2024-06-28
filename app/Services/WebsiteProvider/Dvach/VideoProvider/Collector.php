@@ -7,10 +7,10 @@ use GuzzleHttp\Promise\PromiseInterface;
 
 readonly class Collector
 {
-    private const MAX_TOTAL_REQUESTS = 100;
-    private const PARALLEL = 5;
+    private const int MAX_TOTAL_REQUESTS = 100;
+    private const int PARALLEL = 5;
 
-    private const COOKIE = 'usercode_auth';
+    private const string COOKIE = 'usercode_auth';
 
     public function __construct(
         private \App\Services\Http $http
