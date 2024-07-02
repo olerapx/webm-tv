@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\WatchHistory\Video;
+
 class WatchHistory
 {
     private const int MAX_VIDEOS_TO_SAVE = 10;
@@ -14,7 +16,7 @@ class WatchHistory
         \Illuminate\Contracts\Auth\Authenticatable $user
     ): void {
         $history = array_map(
-            fn(\App\Contracts\Video $video) => $this->from($video, $website, $board, $user),
+            fn (\App\Contracts\Video $video) => $this->from($video, $website, $board, $user),
             $videos
         );
 
@@ -29,24 +31,24 @@ class WatchHistory
         string $website,
         string $board,
         \Illuminate\Contracts\Auth\Authenticatable $user
-    ): \App\Models\WatchHistory\Video {
+    ): Video {
         // TODO: DURING SEARCH, USE ONLY WEBSITE TO FILTER
         $data = [
-            'id'               => \Symfony\Component\Uid\Ulid::generate(),
-            'created_at'       => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
-            'user'             => $user->id,
-            'website'          => $website,
-            'board'            => $board,
-            'url'              => $video->getUrl(),
-            'name'             => $video->getName(),
-            'hash'             => $video->getHash() ?? '',
-            'url_hash'         => $video->getUrlHash(),
-            'thumbnail'        => $video->getThumbnail() ?? '',
-            'duration_seconds' => $video->getDurationSeconds(),
-            'type'             => $video->getType()->value,
-            'mime'             => $video->getType()->getMime()
+            'id'                     => \Symfony\Component\Uid\Ulid::generate(),
+            Video::CREATED_TIMESTAMP => time(),
+            'user'                   => $user->id,
+            'website'                => $website,
+            'board'                  => $board,
+            'url'                    => $video->getUrl(),
+            'name'                   => $video->getName(),
+            'hash'                   => $video->getHash() ?? '',
+            'url_hash'               => $video->getUrlHash(),
+            'thumbnail'              => $video->getThumbnail() ?? '',
+            'duration_seconds'       => $video->getDurationSeconds(),
+            'type'                   => $video->getType()->value,
+            'mime'                   => $video->getType()->getMime()
         ];
 
-        return \Illuminate\Support\Facades\App::make(\App\Models\WatchHistory\Video::class, ['attributes' => $data]);
+        return \Illuminate\Support\Facades\App::make(Video::class, ['attributes' => $data]);
     }
 }

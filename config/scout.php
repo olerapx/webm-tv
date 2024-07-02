@@ -135,7 +135,7 @@ return [
         'key' => env('MEILI_MASTER_KEY'),
         'index-settings' => [
             \App\Models\WatchHistory\Video::class => [
-                'filterableAttributes' => ['user_id']
+                'filterableAttributes' => ['user_id', \App\Models\WatchHistory\Video::CREATED_TIMESTAMP]
             ]
         ],
     ],
