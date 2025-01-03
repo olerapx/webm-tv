@@ -41,7 +41,7 @@ https://webm-tv.com/
 * Create a non-root user, add it to `www-data` and `docker` groups.
 * Clone the project
 * Set up `.env` file (see .env variables reference and `.env.example` file).
-* Set up `.rr.yaml` file (see `.rr.yaml.example` file).
+* Set up `.rr.yaml` file from either `.rr.yaml.prod.example` or `.rr.yaml.dev.example`.
 
 #### Set up NGINX
 

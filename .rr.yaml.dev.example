@@ -1,0 +1,24 @@
+version: '3'
+
+rpc:
+  listen: tcp://127.0.0.1:6001
+
+http:
+  access_logs: true
+  middleware: ["static", "headers", "gzip"]
+  static:
+    dir: "public"
+    forbid: [".htaccess", ".php"]
+  pool:
+    debug: true
+
+logs:
+  mode: development
+  level: debug
+
+  channels:
+    http:
+      level: debug
+      encoding: console
+      output: /tmp/rr.log
+      err_output: /tmp/rr.log

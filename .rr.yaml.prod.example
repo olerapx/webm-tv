@@ -10,15 +10,14 @@ http:
     dir: "public"
     forbid: [".htaccess", ".php"]
   pool:
-    debug: true
+    debug: false
 
 logs:
-  mode: development
+  mode: production
   level: debug
 
   channels:
     http:
-      mode: development
       level: debug
       encoding: console
       output: /tmp/rr.log
