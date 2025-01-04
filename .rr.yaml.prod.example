@@ -20,5 +20,5 @@ logs:
     http:
       level: debug
       encoding: console
-      output: /tmp/rr.log
-      err_output: /tmp/rr.log
+      output: stdout
+      err_output: stderr
