@@ -1,4 +1,4 @@
-FROM spiralscout/roadrunner:2024.1 as roadrunner
+FROM spiralscout/roadrunner:2024.3 as roadrunner
 FROM ubuntu:22.04
 
 ARG NODE_VERSION=20
